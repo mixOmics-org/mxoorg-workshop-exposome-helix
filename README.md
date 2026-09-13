@@ -224,6 +224,21 @@ export RSTUDIO_PANDOC="/Applications/quarto/bin/tools"
 Rscript -e 'rmarkdown::render("practical/exposome_analysis.Rmd", output_format = "html_document")'
 ```
 
+### Showing or hiding the chunk output
+
+The `01-options` chunk near the top of the `.Rmd` sets one flag, `show.results`,
+which controls the output of every code chunk in the practical:
+
+- `show.results <- FALSE` renders the code and nothing else. **This is the version
+  participants read**: they run each line themselves and see the results in their own
+  console. The committed HTML is built this way, and is about 1 MB.
+- `show.results <- TRUE` also prints the results and draws the figures. Use it to
+  check the material before a workshop. The HTML is then about 15 MB, because the
+  twenty-five figures are embedded in it, so do not commit a render made this way.
+
+Inline `` `r ...` `` results, such as the numbers quoted in the exercise answers, are
+computed either way and always appear.
+
 To rebuild the data set you need the prepared blocks from the scoping repository; see
 the header of `Data/build_helix_data.R`.
 

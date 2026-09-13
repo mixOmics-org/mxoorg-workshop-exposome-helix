@@ -51,6 +51,26 @@ div .info {
   width: 95%;
   padding: 10px;
 }
+
+/* The citation ISGlobal requires verbatim. Bootstrap styles a blockquote at
+   17.5px, which is larger than body text and reads oddly for what is really a
+   block of boilerplate, so it is set smaller and tighter here. The
+   word-breaking keeps the long Figshare and GitHub URLs inside the box. */
+div .required-citation {
+  margin: 1.2em auto;
+  width: 95%;
+  padding: 12px 18px;
+  background-color: #F7F7F7;
+  border-left: 4px solid #585858;
+  font-size: 0.85em;
+  line-height: 1.55;
+  color: #333333;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+div .required-citation p {
+  margin: 0;
+}
 </style>
 ```
 ```{r setup, include=FALSE}
@@ -62,9 +82,24 @@ options(width=80)
 
 ```{r 01-options, include=FALSE}
 library(knitr)
+
+# Show or hide the output of every code chunk.
+#
+#   TRUE  - print the results and draw the figures. Use this to check the
+#           material renders and reads correctly before a workshop.
+#   FALSE - show the code and nothing else. This is the version participants
+#           work from: they run each line themselves and read the results in
+#           their own console.
+#
+# Inline `r ...` results in the exercise answers are unaffected and always
+# appear, whichever way this is set.
+show.results <- FALSE
+
 # global options
-knitr::opts_chunk$set(dpi = 100, echo=TRUE, warning=FALSE, message=FALSE, eval = TRUE,
-                      fig.show=TRUE, fig.width= 9,fig.height= 7.5,fig.align='center', out.width = '70%', message = FALSE)
+knitr::opts_chunk$set(dpi = 100, echo = TRUE, warning = FALSE, message = FALSE, eval = TRUE,
+                      results  = if (show.results) 'markup' else 'hide',
+                      fig.show = if (show.results) 'asis'   else 'hide',
+                      fig.width = 9, fig.height = 7.5, fig.align = 'center', out.width = '70%')
 
 colorize <- function(color, x) {
   if (knitr::is_html_output()) {
@@ -153,7 +188,7 @@ load(file.path("..", "Data", "helix.RData"))
 
 The `..` steps up out of `practical/` to find `Data/` beside it. Before running any analysis, confirm what you have:
 
-```{r 00-inspect, results = 'hide'}
+```{r 00-inspect}
 names(helix)
 
 sapply(helix$omics, dim)     # four molecular blocks, samples in rows
@@ -165,7 +200,7 @@ str(helix$covariates)        # and the numeric ones
 
 The exposure variables have terse names, so a codebook is included. It gives a plain-language description of each one:
 
-```{r 00-codebook, results = 'hide'}
+```{r 00-codebook}
 head(helix$annotation$codebook)
 
 # what is hs_sumPCBs5_cadj_Log2?
@@ -191,7 +226,7 @@ dim(proteome)                      # 896 children, 36 proteins
 
 Then use the following steps:
 
-```{r 00-quick-pca, results = 'hide', fig.show='hide'}
+```{r 00-quick-pca}
 MyResult.pca <- pca(proteome) # 1 Run the method PCA
 plotIndiv(MyResult.pca)       # 2 Plot the samples from a PCA result
 plotVar(MyResult.pca)         # 3 Plot the variables from a PCA result
@@ -207,7 +242,7 @@ We begin with two of the blocks described above, and we will keep returning to t
 
 We store each in its own object. Through the sections that follow they take the roles of $\boldsymbol X$ and $\boldsymbol Y$, the notation used by the `mixOmics` arguments and throughout the documentation.
 
-```{r 01-load, results = 'hide', message=FALSE}
+```{r 01-load, message=FALSE}
 proteome        <- helix$omics$proteome            # 36 circulating proteins
 organochlorines <- helix$exposure$organochlorines  # 9 persistent pollutants
 
@@ -221,7 +256,7 @@ The command lines come first and the interpretation is in Exercise 1: run the co
 
 PCA is a useful tool to explore the proteome data and to assess sample similarities between children. Remember that PCA is an unsupervised approach, but we can colour the samples by a known characteristic of the child to assist in interpreting the PCA. Here we center (default argument) and scale the data:
 
-```{r 01-pca-proteome, results = 'hide', fig.show='hide'}
+```{r 01-pca-proteome}
 pca.prot <- pca(proteome, ncomp = 3, scale = TRUE)
 
 pca.prot
@@ -237,19 +272,19 @@ plotIndiv(pca.prot,
 plotIndiv(pca.prot,
           group = helix$outcomes$sex, # asking to color according to sex
           ind.names = FALSE,          # not showing the sample names
-          legend = TRUE,
+          legend = TRUE, legend.title = 'Sex',
           title = 'HELIX proteome, by sex')
 ```
 
 Now recolour the same sample plot twice more. Nothing changes but the `group` argument:
 
-```{r 01-pca-proteome-recolour, results = 'hide', fig.show='hide'}
+```{r 01-pca-proteome-recolour}
 plotIndiv(pca.prot, group = helix$outcomes$cohort, ind.names = FALSE,
-          legend = TRUE, ellipse = TRUE,
+          legend = TRUE, legend.title = 'Cohort', ellipse = TRUE,
           title = 'HELIX proteome, by recruitment cohort')
 
 plotIndiv(pca.prot, group = helix$outcomes$bmi_cat, ind.names = FALSE,
-          legend = TRUE,
+          legend = TRUE, legend.title = 'BMI category', ellipse = TRUE,
           title = 'HELIX proteome, by BMI category')
 ```
 
@@ -257,7 +292,7 @@ plotIndiv(pca.prot, group = helix$outcomes$bmi_cat, ind.names = FALSE,
 
 Now do exactly the same thing to the nine organochlorines. Same function, same arguments, a different data set:
 
-```{r 01-pca-oc, results = 'hide', fig.show='hide'}
+```{r 01-pca-oc}
 pca.oc <- pca(organochlorines, ncomp = 3, scale = TRUE)
 
 pca.oc
@@ -265,11 +300,11 @@ pca.oc
 plot(pca.oc)
 
 plotIndiv(pca.oc, group = helix$outcomes$cohort, ind.names = FALSE,
-          legend = TRUE, ellipse = TRUE,
+          legend = TRUE, legend.title = 'Cohort', ellipse = TRUE,
           title = 'Organochlorines, by recruitment cohort')
 
 plotIndiv(pca.oc, group = helix$outcomes$bmi_cat, ind.names = FALSE,
-          legend = TRUE,
+          legend = TRUE, legend.title = 'BMI category', ellipse = TRUE,
           title = 'Organochlorines, by BMI category')
 ```
 
@@ -332,7 +367,7 @@ Using the summed five congeners rather than a single one matters too. Section 1 
 
 The proteome is already stored. We now take one column of the organochlorine block as the response.
 
-```{r 02-set-y, results = 'hide', message=FALSE}
+```{r 02-set-y, message=FALSE}
 Y <- organochlorines[, "hs_sumPCBs5_cadj_Log2"]
 
 length(Y)
@@ -348,7 +383,7 @@ Note what has changed since Section 1: the response is a **continuous** measurem
 
 We run a PLS model with three components, in regression mode:
 
-```{r 02-pls, results = 'hide', fig.show='hide'}
+```{r 02-pls}
 pls.prot <- pls(proteome, Y, ncomp = 3, mode = "regression")
 
 pls.prot
@@ -356,7 +391,7 @@ pls.prot
 
 Three components were asked for. How many are worth keeping is a question for cross-validation, and `perf()` answers it with a statistic called Q2 [@Sta87]:
 
-```{r 02-perf, results = 'hide', fig.show='hide'}
+```{r 02-perf}
 perf.pls.prot <- perf(pls.prot, validation = "Mfold", folds = 5,
                       nrepeat = 10,
                       seed = 42)   # for a reproducible cross-validation
@@ -380,18 +415,21 @@ The answer here is **one component**. Q2 is `r round(perf.pls.prot$measures$Q2$s
 
 ## Demo and interpretation
 
-```{r 02-pls-plots, results = 'hide', fig.show='hide'}
+```{r 02-pls-plots}
 plotIndiv(pls.prot, rep.space = 'X-variate',
-          group = helix$outcomes$cohort, ind.names = FALSE, legend = TRUE,
+          group = helix$outcomes$cohort, ind.names = FALSE,
+          legend = TRUE, legend.title = 'Cohort',
           title = 'PLS1 on the HELIX proteome, comp 1 - 2')
 
-plotLoadings(pls.prot, comp = 1, ndisplay = 20,
+# block = 'X' plots the proteome loadings only. The Y block holds the single
+# response column, so plotting it would draw a chart with one bar.
+plotLoadings(pls.prot, comp = 1, ndisplay = 20, block = 'X',
              title = 'Proteome loadings, component 1')
 ```
 
 The loading plot says which proteins build component 1, but not which way the component runs against the exposure. To settle the direction, plot the **observed** PCB concentration against the component itself, with a fitted line through it.
 
-```{r 02-scatter, results = 'hide', fig.show='hide'}
+```{r 02-scatter}
 t1 <- pls.prot$variates$X[, 1]   # component 1 of the proteome
 
 plot(t1, Y,
@@ -422,16 +460,17 @@ We run similar command lines, but this time we use *sparse PLS* that will enable
 
 The variable selection process is done within PLS. For this, we need to specify the number of variables to select per component.
 
-```{r 02-spls, results = 'hide', fig.show='hide'}
+```{r 02-spls}
 spls.prot <- spls(proteome, Y, ncomp = 2, mode = "regression",
                   keepX = c(10, 10) # select 10 proteins on each component
                   )
 
 plotIndiv(spls.prot, rep.space = 'X-variate',
-          group = helix$outcomes$cohort, ind.names = FALSE, legend = TRUE,
+          group = helix$outcomes$cohort, ind.names = FALSE,
+          legend = TRUE, legend.title = 'Cohort',
           title = 'sparse PLS1 on the HELIX proteome, comp 1 - 2')
 
-plotLoadings(spls.prot, comp = 1,
+plotLoadings(spls.prot, comp = 1, block = 'X',
              title = 'Selected proteins, component 1')
 
 plotVar(spls.prot, cutoff = 0.3)  # variable plot (correlation circle plot)
@@ -493,7 +532,7 @@ If your interest is the discriminant version of this — several omics blocks ag
 
 Each data matrix is stored into a list of matrices $\boldsymbol X$. Each element of $\boldsymbol X$ *should be named*, as we will match these names with the `keepX` parameter for variable selection. The response goes into the **same list**, and we tell `block.pls()` which element it is with the `indY` argument.
 
-```{r 03-blocks, results = 'hide'}
+```{r 03-blocks}
 X.list <- list(proteome        = helix$omics$proteome,
                serum           = helix$omics$serum,
                urine           = helix$omics$urine,
@@ -525,14 +564,14 @@ design
 
 ## block PLS, then block sPLS
 
-```{r 03-block-pls, results = 'hide', fig.show='hide'}
+```{r 03-block-pls}
 block.pls.helix <- block.pls(X.list, indY = 5, ncomp = 2,
                              mode = "regression", design = design)
 ```
 
 Now the sparse version. As in Section 2, we state how many variables to keep per block and per component. Note that `perf()` and tuning are not available for `block.pls` and `block.spls`, so the `keepX` values below are fixed by hand rather than chosen by cross-validation, and this analysis is exploratory rather than validated.
 
-```{r 03-block-spls, results = 'hide', fig.show='hide'}
+```{r 03-block-spls}
 list.keepX <- list(proteome      = c(10, 10),
                    serum         = c(15, 15),
                    urine         = c(10, 10),
@@ -544,7 +583,7 @@ block.spls.helix <- block.spls(X.list, indY = 5, ncomp = 2,
 
 # sample plots: one panel per block
 plotIndiv(block.spls.helix, group = helix$outcomes$cohort,
-          ind.names = FALSE, legend = TRUE)
+          ind.names = FALSE, legend = TRUE, legend.title = 'Cohort')
 
 # variable plots:
 plotVar(block.spls.helix, cutoff = 0.5, legend = TRUE,
@@ -561,12 +600,25 @@ circosPlot(block.spls.helix, group = helix$outcomes$cohort,
 selectVar(block.spls.helix, comp = 1, block = "proteome")
 selectVar(block.spls.helix, comp = 1, block = "urine")
 
-plotLoadings(block.spls.helix, comp = 1, block = "proteome")
+# no block argument: one panel per block, the response included
+plotLoadings(block.spls.helix, comp = 1)
 ```
+
+<p>
+::: info
+**ⓘ Why some organochlorines sit outside the correlation circle**
+
+A correlation circle plot assumes its two axes are orthogonal. That holds for the four predictor blocks, whose successive components are uncorrelated by construction. It does not hold for the response block. In `mode = "regression"` the response is deflated on the predictor components rather than on its own, so nothing forces its two components apart, and here they are `r round(cor(block.spls.helix$variates$organochlorines[, 1], block.spls.helix$variates$organochlorines[, 2]), 2)` correlated.
+
+With the axes that close together, a variable strongly correlated with one is necessarily strongly correlated with the other, and the point it plots at can fall beyond a radius of 1. Each coordinate is still a valid correlation, so read the organochlorine positions as directions rather than as distances from the origin.
+
+The underlying reason is worth keeping: two response components that nearly coincide mean the organochlorines carry almost no second dimension, which is the same conclusion the PLS1 of Section 2 reached when Q2 retained a single component.
+:::
+</p>
 
 The serum metabolites are named `metab_1`, `metab_2` and so on, carrying a chemical class and no compound identifier, because none exists in the release. Their loadings are therefore **not biologically interpretable**, and we do not try to interpret them. The proteome, urine and transcriptome annotations are real:
 
-```{r 03-annotation, results = 'hide'}
+```{r 03-annotation}
 head(helix$annotation$proteome)
 head(helix$annotation$urine)
 head(helix$annotation$serum)        # Class only, no compound names
@@ -577,7 +629,7 @@ head(helix$annotation$transcriptome)
 
 One panel per predictor block: the block's own component 1 on the horizontal axis, the organochlorine component 1 on the vertical axis. Where the points fall along a line, that block and the response share a direction of variation.
 
-```{r 03-panels, results = 'hide', fig.show='hide'}
+```{r 03-panels}
 ty <- block.spls.helix$variates$organochlorines[, 1]   # the response variate
 
 par(mfrow = c(2, 2))
@@ -685,25 +737,21 @@ Further details, analyses and vignettes are available on www.mixOmics.org
 
 The data used in this practical come from the HELIX study, released by ISGlobal for the Exposome Data Challenge 2021. Educational use is permitted, and the following citation paragraph is required verbatim on any publication arising from these data:
 
-> This data were created as part of the ISGlobal Exposome data challenge 2021, presented in
-> this publication (preprint: https://arxiv.org/abs/2202.01680 - under review in Env. Int.).
-> The HELIX study [Vrijheid, Slama, et al. EHP 2014; Maitre et al. 2018 BMJ Open]
-> represents a collaborative project across six established and ongoing longitudinal
-> population-based birth cohort studies in six European countries (France, Greece,
-> Lithuania, Norway, Spain, and the United Kingdom). The research leading to these results
-> has received funding from the European Community's Seventh Framework Programme
-> (FP7/2007-2013) under grant agreement no 308333 – the HELIX project and the
-> H2020-EU.3.1.2. - Preventing Disease Programme under grant agreement no 874583 (ATHLETE
-> project). The data used for the analyses described in this manuscript were obtained from:
-> Figshare https://figshare.com/account/home#/projects/98813 (project number 98813 accesed
-> on MM/DD/YYYY) and github
-> https://github.com/isglobal-exposomeHub/ExposomeDataChallenge2021/.
-
-> **Draft wording — to be confirmed before this practical is circulated.** The
-> paragraph below has not yet been agreed with ISGlobal. It should be checked with
-> Augusto Anguita, and this note removed, before the practical is published or
-> distributed to participants. The required citation above is not affected: it is
-> reproduced verbatim from the release and stands as it is.
+::: required-citation
+This data were created as part of the ISGlobal Exposome data challenge 2021, presented in
+this publication (preprint: https://arxiv.org/abs/2202.01680 - under review in Env. Int.).
+The HELIX study [Vrijheid, Slama, et al. EHP 2014; Maitre et al. 2018 BMJ Open]
+represents a collaborative project across six established and ongoing longitudinal
+population-based birth cohort studies in six European countries (France, Greece,
+Lithuania, Norway, Spain, and the United Kingdom). The research leading to these results
+has received funding from the European Community's Seventh Framework Programme
+(FP7/2007-2013) under grant agreement no 308333 – the HELIX project and the
+H2020-EU.3.1.2. - Preventing Disease Programme under grant agreement no 874583 (ATHLETE
+project). The data used for the analyses described in this manuscript were obtained from:
+Figshare https://figshare.com/account/home#/projects/98813 (project number 98813 accesed
+on MM/DD/YYYY) and github
+https://github.com/isglobal-exposomeHub/ExposomeDataChallenge2021/.
+:::
 
 The extract distributed with this practical is shared for teaching with the agreement of ISGlobal, with thanks to Augusto Anguita. We are grateful to the HELIX consortium and to the families who took part in the six cohorts.
 

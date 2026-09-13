@@ -17,3 +17,7 @@
 
 # Base-graphics device output, produced when a script plots outside knitr
 Rplots.pdf
+
+# Local working notes for developers, not part of the workshop material.
+# Hand these to whoever picks the issue up; they are deliberately untracked.
+dev-notes/
