@@ -91,6 +91,12 @@ colorize <- function(color, x) {
       htmlcolor = "#CC0000"
     }
     sprintf("<span style='color: %s;'>%s</span>", htmlcolor, x)
+  } else {
+    # Any non-HTML output, such as the pdf_document format advertised in the
+    # YAML above. Return the text unchanged: without this branch the function
+    # returns NULL invisibly and every coloured word vanishes from the
+    # sentence that contains it.
+    x
   }
 }
 ```
@@ -726,6 +732,12 @@ The data used in this practical come from the HELIX study, released by ISGlobal 
 > Figshare https://figshare.com/account/home#/projects/98813 (project number 98813 accesed
 > on MM/DD/YYYY) and github
 > https://github.com/isglobal-exposomeHub/ExposomeDataChallenge2021/.
+
+> **Draft wording — to be confirmed before this practical is circulated.** The
+> paragraph below has not yet been agreed with ISGlobal. It should be checked with
+> Augusto Anguita, and this note removed, before the practical is published or
+> distributed to participants. The required citation above is not affected: it is
+> reproduced verbatim from the release and stands as it is.
 
 The extract distributed with this practical is shared for teaching with the agreement of ISGlobal, with thanks to Augusto Anguita. We are grateful to the HELIX consortium and to the families who took part in the six cohorts.
 
