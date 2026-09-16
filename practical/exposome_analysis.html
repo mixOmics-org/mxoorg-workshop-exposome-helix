@@ -11,7 +11,7 @@
 
 <meta name="author" content="Kim-Anh Lê Cao" />
 
-<meta name="date" content="2026-09-13" />
+<meta name="date" content="2026-09-16" />
 
 <title>Multivariate analysis of the exposome with mixOmics</title>
 
@@ -2776,7 +2776,7 @@ border-radius: 0px;
 mixOmics</h1>
 <h3 class="subtitle">The HELIX case study</h3>
 <h4 class="author">Kim-Anh Lê Cao</h4>
-<h4 class="date">13 September 2026</h4>
+<h4 class="date">16 September 2026</h4>
 
 </div>
 
@@ -2854,11 +2854,10 @@ al.</span> 2014</a>; <a href="#ref-Mai18"><span class="nocase">Maitre et
 al.</span> 2018</a>)</span>. Mother–child pairs were followed from
 pregnancy, and the children were re-examined at age 6 to 11.</p>
 <p>This practical uses a processed and normalised subset of the data
-released by ISGlobal for its Exposome Data Challenge. The data are
-stored in a single list, <code>helix</code>, containing 896 children.
-Every element contains the same children <strong>in the same
-order</strong>, which is a prerequisite for the analyses that
-follow.</p>
+released by ISGlobal for its Exposome Data Challenge. The data were
+processed and stored in a single list, <code>helix</code>, containing
+896 children. The samples from the same children are in the <strong>same
+order</strong>, which is required to perform data integration.</p>
 <table>
 <colgroup>
 <col width="50%" />
@@ -2867,7 +2866,7 @@ follow.</p>
 <thead>
 <tr class="header">
 <th>element</th>
-<th>what it holds</th>
+<th>what it contains</th>
 </tr>
 </thead>
 <tbody>
@@ -2892,30 +2891,30 @@ variables each, 81 variables in total</td>
 </tr>
 <tr class="odd">
 <td><code>helix$annotation</code></td>
-<td>feature annotation for each block, and the exposure codebook</td>
+<td>feature annotation for each omics block, and the exposure
+codebook</td>
 </tr>
 <tr class="even">
 <td><code>helix$provenance</code></td>
-<td>where the data came from, and every processing step applied to
-it</td>
+<td>where the data came from, and processing steps applied</td>
 </tr>
 </tbody>
 </table>
 <p>The <a href="https://github.com/mixOmics-org/mxoorg-workshop-exposome-helix#the-data">repository
 README</a> describes how the extract was prepared and what processing
-was applied to each block.</p>
+was applied to each omics block.</p>
 </div>
 <div id="load-the-data" class="section level2">
 <h2>Load the data</h2>
-<p>The data set is in the repository’s <code>Data/</code> folder. First,
-set the working directory to the folder containing this file. In
+<p>The dataset is available in the repository’s <code>Data/</code>
+folder. First, save the .RData into your working directory folder.
+Second, set the working directory to the folder containing this file. In
 RStudio, open this <code>.Rmd</code> and select <strong>Session &gt; Set
 Working Directory &gt; To Source File Location</strong>. Then load the
-data:</p>
-<pre class="r"><code>load(file.path(&quot;..&quot;, &quot;Data&quot;, &quot;helix.RData&quot;))</code></pre>
-<p>The <code>..</code> steps out of <code>practical/</code> to find the
-neighbouring <code>Data/</code> folder. Before running an analysis,
-inspect the objects you have loaded:</p>
+data. The command may look like this, depending on where the data are
+stored:</p>
+<pre class="r"><code>load(&quot;helix.RData&quot;)</code></pre>
+<p>Before running an analysis, inspect the objects you have loaded:</p>
 <pre class="r"><code>names(helix)
 
 sapply(helix$omics, dim)     # four molecular blocks, samples in rows
@@ -2923,8 +2922,8 @@ sapply(helix$exposure, ncol) # nine families of environmental exposures
 
 summary(helix$outcomes)      # characteristics of the children, all factors
 str(helix$covariates)        # and the numeric ones</code></pre>
-<p>The exposure variables have abbreviated names. The included codebook
-gives a plain-language description of each variable:</p>
+<p>The exposure variables have abbreviated names. The codebook gives a
+description of each variable:</p>
 <pre class="r"><code>head(helix$annotation$codebook)
 
 # what is hs_sumPCBs5_cadj_Log2?
@@ -2932,7 +2931,7 @@ helix$annotation$codebook[&quot;hs_sumPCBs5_cadj_Log2&quot;, ]</code></pre>
 </div>
 <div id="id_00:quick-start" class="section level2">
 <h2>Quick start in <code>mixOmics</code></h2>
-<p>Each analysis follows the same workflow:</p>
+<p>In mixOmics, each analysis follows the same workflow:</p>
 <ol style="list-style-type: decimal">
 <li>Run the method.</li>
 <li>Plot the samples.</li>
@@ -2947,24 +2946,26 @@ dim(proteome)                      # 896 children, 36 proteins</code></pre>
 <pre class="r"><code>MyResult.pca &lt;- pca(proteome) # 1 Run the method PCA
 plotIndiv(MyResult.pca)       # 2 Plot the samples from a PCA result</code></pre>
 <pre class="r"><code>plotVar(MyResult.pca)         # 3 Plot the variables from a PCA result</code></pre>
-<p>For now, focus on this sequence rather than interpreting the plots.
-The same three steps recur throughout the practical as the methods
-become more complex.</p>
+<p>For now, hold off on interpreting the plots, which we will do in the
+next sections. The same three steps recur throughout the practical as
+the methods become more complex.</p>
 </div>
 </div>
 <div id="id_01" class="section level1">
 <h1>1. PCA on the HELIX case study</h1>
-<p>We will use the same two blocks throughout the practical. The
-<strong>proteome</strong> contains 36 circulating proteins, largely
-inflammatory markers and cytokines. The <strong>organochlorines</strong>
-block contains nine persistent chemical pollutants measured in each
-child’s serum. The <a href="https://github.com/mixOmics-org/mxoorg-workshop-exposome-helix#the-data">repository
-README</a> describes how both blocks were prepared.</p>
+<p>We consider the following two data sets:</p>
+<ul>
+<li><p>the <strong>proteome</strong> contains 36 circulating proteins,
+largely inflammatory markers and cytokines.</p></li>
+<li><p>the <strong>organochlorines</strong> data set contains nine
+persistent chemical pollutants measured in each child’s serum. The <a href="https://github.com/mixOmics-org/mxoorg-workshop-exposome-helix#the-data">repository
+README</a> describes how the datasets were prepared.</p></li>
+</ul>
 <div id="load-the-data-1" class="section level2">
 <h2>Load the data</h2>
-<p>Store each block in its own object. In the sections that follow,
-<code>proteome</code> and <code>organochlorines</code> take the roles of
-<span class="math inline">\(\boldsymbol X\)</span> and <span class="math inline">\(\boldsymbol Y\)</span>, respectively. This is the
+<p>We store each omics dataset as an object. In the sections that
+follow, <code>proteome</code> and <code>organochlorines</code> take the
+roles of <span class="math inline">\(\boldsymbol X\)</span> and <span class="math inline">\(\boldsymbol Y\)</span>, respectively. This is the
 notation used in the <code>mixOmics</code> arguments and
 documentation.</p>
 <pre class="r"><code>proteome        &lt;- helix$omics$proteome            # 36 circulating proteins
@@ -2974,13 +2975,13 @@ dim(proteome)   # check dimension
 dim(organochlorines)</code></pre>
 </div>
 <div id="id_01:pca-proteome" class="section level2">
-<h2>Exploration of one omics block with PCA</h2>
-<p>PCA is an unsupervised method: it finds the main variation in the
-proteome without using any information about the children. We can then
-colour the sample plot by a known characteristic, such as sex or
-recruitment cohort, to see whether that characteristic helps explain the
-pattern. Here, we centre the data (the default) and scale each protein
-before fitting the PCA:</p>
+<h2>Exploration of the proteomics dataset with PCA</h2>
+<p>PCA is an unsupervised method: the aim is to identify the main
+sources of variation without including any information about the
+children in the analysis. We can then colour the sample plot by a known
+characteristic, such as sex or recruitment cohort, to see whether that
+characteristic helps explain the pattern. Here, we centre the data (the
+default) and scale each protein before fitting the PCA:</p>
 <pre class="r"><code>pca.prot &lt;- pca(proteome, ncomp = 3, scale = TRUE)
 
 pca.prot
@@ -3007,9 +3008,9 @@ changes:</p>
           title = &#39;HELIX proteome, by BMI category&#39;)</code></pre>
 </div>
 <div id="id_01:pca-oc" class="section level2">
-<h2>The same exploration on one exposure family</h2>
-<p>Apply the same analysis to the nine organochlorines. The function and
-arguments are unchanged; only the data set differs:</p>
+<h2>Exploration of the exposure dataset organochlorines with PCA</h2>
+<p>We apply the same analysis to the nine organochlorines. The function
+and arguments are unchanged:</p>
 <pre class="r"><code>pca.oc &lt;- pca(organochlorines, ncomp = 3, scale = TRUE)
 
 pca.oc
@@ -3026,8 +3027,8 @@ plot(pca.oc)</code></pre>
 <h2>Exercise 1: Interpretation</h2>
 <p>Run the code above, line by line.</p>
 <ol style="list-style-type: decimal">
-<li><p>How many components would you retain in each PCA, and why? Do the
-two data sets give the same answer?</p></li>
+<li><p>How many components would you retain in each PCA, and
+why?</p></li>
 <li><p>Compare the proteome plots coloured by sex, cohort and BMI
 category. Which characteristic explains most of the variation? Does the
 same characteristic come first in the organochlorines?</p></li>
@@ -3036,9 +3037,9 @@ data sets. What does this imply when relating the proteome to the
 organochlorines? What would you check before interpreting an association
 between them?</p></li>
 <li><p><em>A more advanced question.</em> A sample plot shows whether a
-characteristic separates the children. To quantify this pattern, regress
-a component on a characteristic and examine R², the proportion of
-variation in that component explained by the characteristic.</p>
+characteristic separates the children. To quantify this pattern, we can
+regress a component on a characteristic and examine R², the proportion
+of variation in that component explained by the characteristic:</p>
 <pre class="r"><code># proteome: component 1, then component 2
 summary(lm(pca.prot$variates$X[, 1] ~ helix$outcomes$cohort))$r.squared
 summary(lm(pca.prot$variates$X[, 2] ~ helix$outcomes$bmi_cat))$r.squared
@@ -3060,9 +3061,10 @@ plots?</p></li>
 total variance, while the third adds only 6.3%. Using the elbow method,
 we would retain 2 components. For the organochlorines, the first
 component alone explains 55.8%, and the screeplot reaches its elbow
-immediately afterwards. The answers differ because the nine
-organochlorines largely measure one underlying pattern: the congeners
-co-accumulate in the same children. The 36 proteins do not.</p></li>
+immediately afterwards. The amount of explained variance differs because
+the nine organochlorines largely measure one underlying pattern: the
+congeners co-accumulate in the same children. The 36 proteins do
+not.</p></li>
 <li><p>Neither data set separates by <span style="color: #388ECC;">sex</span>; the two groups overlap in both
 plots. <strong>Cohort</strong> produces the clearest separation in both
 data sets and is more visible in the proteome’s first component than in
@@ -3073,15 +3075,14 @@ category contains only 9 of the 896 children and is therefore almost
 invisible. Check group sizes with <code>summary(helix$outcomes)</code>
 before interpreting colour patterns.</p></li>
 <li><p>In both data sets, the largest single source of variation is
-<strong>where the child was recruited</strong>, rather than a
-characteristic of the individual child. For the molecular blocks, this
+<strong>where the child was recruited</strong> (cohort), rather than a
+characteristic of the individual child. For the proteomics data, this
 may reflect collection and handling as well as biology. A model could
 therefore associate the proteome with organochlorines by capturing
 differences between cohorts rather than differences between children. To
-check this, <strong>remove cohort from the predictor and response and
-refit the model</strong>, then ask whether the association remains
-within cohorts. Code for this check appears in <em>To go
-further</em>.</p></li>
+check this, we could stratify by cohort, then ask whether the
+association remains within cohorts. Code for this check appears in
+<em>To go further</em>.</p></li>
 <li><p>The values agree with the plots. Cohort explains R² = 0.47 of
 proteome component 1 and 0.35 of organochlorine component 1. The second
 components differ: BMI category explains 0.25 of proteome component 2,
@@ -3096,7 +3097,7 @@ important.</p></li>
 </div>
 </div>
 <div id="id_02" class="section level1">
-<h1>2. PLS1 — regressing one exposure on one omics block</h1>
+<h1>2. PLS1 — regressing one exposure on one omics dataset</h1>
 <p>We now ask whether variation in the proteome can explain variation in
 a <strong>single exposure</strong>. Partial Least Squares regression
 with one response is called PLS1 <span class="citation">(<a href="#ref-Lec08"><span class="nocase">Lê Cao et al.</span>
@@ -3105,16 +3106,15 @@ with one response is called PLS1 <span class="citation">(<a href="#ref-Lec08"><s
 <h2>The response</h2>
 <p>The response is <code>hs_sumPCBs5_cadj_Log2</code>: the summed serum
 concentration of five polychlorinated biphenyls (PCBs), adjusted for
-lipids and transformed to the log2 scale. PCBs are <strong>persistent
-organic pollutants</strong>. Although these industrial compounds were
-banned decades ago, they resist metabolism and are measurable in every
-child in this cohort. They are also strongly
-<strong>lipophilic</strong>: they accumulate in body fat and circulate
-bound to serum lipids, which is why their concentration is expressed per
-unit of lipid. Their documented effects include immune and endocrine
-toxicity, while the proteome used here consists largely of circulating
-inflammatory markers. This makes summed PCBs a relevant exposure to
-examine against these proteins.</p>
+lipids and log2 transformed. PCBs are <strong>persistent organic
+pollutants</strong>. Although these industrial compounds were banned
+decades ago, they resist metabolism and are measurable in every child in
+this cohort. They are also strongly <strong>lipophilic</strong>: they
+accumulate in body fat and circulate bound to serum lipids, which is why
+their concentration is expressed per unit of lipid. Their documented
+effects include immune and endocrine toxicity, while the proteome used
+here consists largely of circulating inflammatory markers. This makes
+summed PCBs a relevant exposure to examine against these proteins.</p>
 <p>We use the sum of five congeners rather than a single congener.
 Section 1 showed that the organochlorines are largely one-dimensional
 because they co-accumulate. The sum represents this shared pattern and
@@ -3122,8 +3122,8 @@ is less noisy than any one congener.</p>
 </div>
 <div id="set-the-response-variable" class="section level2">
 <h2>Set the response variable</h2>
-<p>The proteome is already stored in <code>proteome</code>. Select one
-column of the organochlorine block as the response:</p>
+<p>We select the appropriate column of the organochlorine block as the
+response:</p>
 <pre class="r"><code>Y &lt;- organochlorines[, &quot;hs_sumPCBs5_cadj_Log2&quot;]
 
 length(Y)
@@ -3131,9 +3131,9 @@ summary(Y)
 
 hist(Y, breaks = 30, xlab = &quot;summed PCBs (log2, lipid-adjusted)&quot;,
      main = &quot;The response&quot;)</code></pre>
-<p>The response is now a <strong>continuous</strong> measurement rather
-than a group label. This distinguishes regression from discriminant
-analysis and is the only difference in the code.</p>
+<p>The response is a <strong>continuous</strong> measurement rather than
+a group label. This distinguishes regression from discriminant
+(classification) analysis.</p>
 </div>
 <div id="first-pass-pls1" class="section level2">
 <h2>First pass: PLS1</h2>
@@ -3152,32 +3152,29 @@ plot(perf.pls.prot, criterion = &quot;Q2&quot;)</code></pre>
 <pre class="r"><code>perf.pls.prot$measures$Q2$summary</code></pre>
 <p>
 <div class="info">
-<p><strong>ⓘ Use Q2 to choose the number of components</strong></p>
+<p><strong>ⓘ We use Q2 to choose the number of components</strong></p>
 <p>Q2 compares the model’s predictions for held-out children with
-predictions based only on the average. Retain a component if its Q2 is
-above the horizontal line at 0.0975, and stop at the first component
-below the line. Q2 indicates <strong>how many components to
-retain</strong>. It does not measure the strength or importance of the
-relationship.</p>
+predictions based only on the average. We retain a component if its Q2
+is above the horizontal line at 0.0975, and exclude any component below
+the line. Q2 indicates <strong>how many components to retain</strong>.
+It does not measure the strength or importance of the relationship.</p>
 <p>For reproducible cross-validation, pass the seed through the
-<code>seed</code> argument of <code>perf()</code>, as shown above.
-Calling <code>set.seed()</code> before <code>perf()</code> is not
-sufficient.</p>
+<code>seed</code> argument of <code>perf()</code>, as shown above.</p>
 </div>
 </p>
 <p>The result supports <strong>one component</strong>. Component 1 has a
 Q2 of 0.177, above the line. Component 2 has a Q2 of 0.066, below the
 line, and component 3 is negative. A negative value means that the
 component predicts held-out children worse than the training average.
-One component is the usual result in PLS1, where the response contains a
-single column. The plots below retain a second component because
-<code>plotIndiv()</code> and <code>plotVar()</code> need two axes.</p>
+One component is the usual result in PLS1, where we have a single
+response. However, we retain a second component for plotting, and will
+primarily focus our interpretation on the first component.</p>
 </div>
 <div id="examine-the-model" class="section level2">
 <h2>Examine the model</h2>
-<p>First, plot the children in the space defined by the proteome
-components and colour them by cohort. Then inspect the protein loadings
-for component 1.</p>
+<p>First, plot the children in the space spanned by the proteome
+components and colour them by cohort. We then inspect the protein
+loadings for component 1.</p>
 <pre class="r"><code>plotIndiv(pls.prot, rep.space = &#39;X-variate&#39;,
           group = helix$outcomes$cohort, ind.names = FALSE,
           legend = TRUE, legend.title = &#39;Cohort&#39;,
@@ -3187,9 +3184,10 @@ for component 1.</p>
 plotLoadings(pls.prot, comp = 1, ndisplay = 20, block = &#39;X&#39;,
              title = &#39;Proteome loadings, component 1&#39;)</code></pre>
 <p>The loading plot shows which proteins contribute to component 1, but
-not the direction of their relationship with the exposure. Plot the
-<strong>observed</strong> PCB concentration against the component and
-add a fitted line:</p>
+not the direction of their relationship with the exposure. To do this,
+we plot the <strong>observed</strong> PCB concentration against the
+component, add a fitted line and calculate the correlation between the
+component and the response:</p>
 <pre class="r"><code>t1 &lt;- pls.prot$variates$X[, 1]   # component 1 of the proteome
 
 plot(t1, Y,
@@ -3202,6 +3200,9 @@ abline(lm(Y ~ t1), lwd = 2)</code></pre>
 <p>The vertical axis shows the measured PCB concentration in its
 original analysis units. The correlation between the component and the
 exposure is 0.43.</p>
+</div>
+<div id="interpretation" class="section level2">
+<h2>Interpretation</h2>
 <p>Section 1 showed that cohort structures both blocks. Some of the
 horizontal spread therefore represents differences <em>between</em>
 cohorts rather than between children within a cohort, and the fitted
@@ -3211,21 +3212,21 @@ model after removing cohort from the predictor and response.</p>
 </div>
 <div id="sparse-pls1-for-variable-selection" class="section level2">
 <h2>Sparse PLS1 for variable selection</h2>
-<p>Sparse PLS fits the components and selects the proteins that
-contribute to them in the same analysis.</p>
+<p>Sparse PLS fits the components and selects the set of proteins that
+contribute to them within the same analysis.</p>
 <p>
 <div class="info">
 <p><strong>ⓘ Sparse means zeroes in the loading vectors</strong></p>
-<p>In ordinary PLS, every protein can contribute to a component. Sparse
-PLS uses lasso regularisation to set some loading values to zero <span class="citation">(<a href="#ref-Lec08"><span class="nocase">Lê Cao et
-al.</span> 2008</a>; <a href="#ref-Lec11">Lê Cao et al.
-2011</a>)</span>. Only proteins with non-zero loadings contribute to the
-component, so the method also performs variable selection.</p>
+<p>In ordinary PLS, every protein can contribute to a component, as all
+loading weights are non-zero. Sparse PLS uses lasso penalisation to set
+some loading values to zero <span class="citation">(<a href="#ref-Lec08"><span class="nocase">Lê Cao et al.</span> 2008</a>; <a href="#ref-Lec11">Lê Cao et al. 2011</a>)</span>. Only proteins with
+non-zero loadings contribute to the component, so the method also
+performs variable selection.</p>
 </div>
 </p>
-<p>Specify how many proteins to select on each component:</p>
+<p>We need to specify how many proteins to select on each component:</p>
 <pre class="r"><code>spls.prot &lt;- spls(proteome, Y, ncomp = 2, mode = &quot;regression&quot;,
-                  keepX = c(10, 10) # select 10 proteins on each component
+                  keepX = c(10, 10) # select 10 proteins on each of the 2 components
                   )
 
 plotIndiv(spls.prot, rep.space = &#39;X-variate&#39;,
@@ -3297,19 +3298,19 @@ documentation</a>.</p></li>
 </div>
 <div id="block-spls-to-integrate-several-omics-data-sets" class="section level1">
 <h1>3. Block sPLS to integrate several omics data sets</h1>
-<p>Section 2 related one omics block to one response. HELIX measured
+<p>Section 2 related one omics dataset to one response. HELIX measured
 four omics blocks in the same children. <code>block.spls</code> can
 relate all four blocks to the same response in a single model <span class="citation">(<a href="#ref-Ten14">Tenenhaus et al.
-2014</a>)</span>. It is the regression counterpart of DIABLO, with a
-continuous response block in place of a class label.</p>
-<p>The organochlorines remain the response, and the proteome remains one
-of the predictors. We now add the serum metabolome, urine metabolome and
-transcriptome.</p>
+2014</a>)</span>. It is the regression counterpart of DIABLO <span class="citation">(<a href="#ref-Sin19">Singh et al. 2019</a>)</span>,
+with a continuous response block in place of a class label.</p>
+<p>The organochlorines will be the response <em>matrix</em>, and the
+other omics datasets (proteome, serum metabolome, urine metabolome and
+transcriptome) the predictors.</p>
 <p>
 <div class="info">
-<p><strong>ⓘ Align the samples across all blocks</strong></p>
+<p><strong>ⓘ Align the samples across all omics blocks</strong></p>
 <p>Every block must contain the same individuals in the same order. Each
-component has one value for each of the <span class="math inline">\(N\)</span> individuals, and the method measures
+component has one value for each of the <span class="math inline">\(N\)</span> individuals, and our method measures
 covariance between these aligned values. If the rows refer to different
 individuals, the estimated relationships between blocks are
 meaningless.</p>
@@ -3318,9 +3319,9 @@ meaningless.</p>
 <p>For the discriminant version, which relates several omics blocks to a
 <em>categorical</em> outcome, see the DIABLO analysis in the <a href="https://github.com/mixOmics-org/mxoorg-workshop-intro-mixomics">companion
 practical</a>.</p>
-<div id="set-up-the-blocks" class="section level2">
-<h2>Set up the blocks</h2>
-<p>Store the data matrices in a list, <span class="math inline">\(\boldsymbol X\)</span>, and name every element.
+<div id="set-up-the-omics-blocks" class="section level2">
+<h2>Set up the omics blocks</h2>
+<p>We store the data matrices in a list, <span class="math inline">\(\boldsymbol X\)</span>, and name every element.
 The names will be matched to the <code>keepX</code> parameter during
 variable selection. The response belongs in the <strong>same
 list</strong>; the <code>indY</code> argument tells
@@ -3341,16 +3342,19 @@ names(X.list)   # organochlorines is element 5: that is what indY = 5 refers to<
 off-diagonal entry is a value between 0 and 1 that controls the strength
 of the relationship the model seeks between a pair of blocks. A value of
 1 asks the two blocks to agree as strongly as possible; a value of 0
-does not link them.</p>
-<p>Here, each omics block is linked to the organochlorines but not to
-the other omics blocks. This focuses the model on covariance between
-each predictor block and the response. Linking the predictor blocks to
-one another would trade some covariance with the response for agreement
-among the predictor blocks. That choice is available in both regression
-and classification models; it does not distinguish the two. See <a href="https://mixomics.org/methods/n-integration-methods/">N-integration
+only includes a very small level of integration between them during the
+optimisation procedure.</p>
+<p>Here, we link each omics block to the organochlorines with a value of
+1, and to the other omics blocks with a value of 0.5. This focuses the
+model on covariance between each predictor block and the response.
+Linking the predictor blocks to one another, as the 0.5 entries do,
+trades some covariance with the response for agreement among the
+predictor blocks. That choice is available in both regression and
+classification models. See <a href="https://mixomics.org/methods/n-integration-methods/">N-integration
 methods</a> for more information about choosing a design.</p>
-<pre class="r"><code>design &lt;- matrix(0, nrow = length(X.list), ncol = length(X.list),
-                 dimnames = list(names(X.list), names(X.list)))
+<pre class="r"><code>design &lt;- matrix(0.5, #a medium amount of correlation between omics datasets
+        nrow = length(X.list), ncol = length(X.list),
+        dimnames = list(names(X.list), names(X.list)))
 design[&quot;organochlorines&quot;, ] &lt;- 1
 design[, &quot;organochlorines&quot;] &lt;- 1
 diag(design) &lt;- 0
@@ -3363,15 +3367,15 @@ design</code></pre>
 <pre class="r"><code>block.pls.helix &lt;- block.pls(X.list, indY = 5, ncomp = 2,
                              mode = &quot;regression&quot;, design = design)</code></pre>
 <p>Now fit the sparse version. As in Section 2, specify how many
-variables to keep for each block and component. <code>perf()</code> and
-tuning are not available for <code>block.pls</code> or
-<code>block.spls</code>, so the <code>keepX</code> values below are
-fixed manually rather than selected by cross-validation. This analysis
-is therefore exploratory rather than validated.</p>
-<pre class="r"><code>list.keepX &lt;- list(proteome      = c(10, 10),
-                   serum         = c(15, 15),
+variables to keep for each block and component. Note that
+<code>perf()</code> and tuning are not currently available for
+<code>block.pls</code> or <code>block.spls</code>, so the
+<code>keepX</code> values below are fixed manually rather than selected
+by cross-validation. This analysis is therefore exploratory.</p>
+<pre class="r"><code>list.keepX &lt;- list(proteome      = c(10, 5), #values can change from one component to the next
+                   serum         = c(15, 10),
                    urine         = c(10, 10),
-                   transcriptome = c(25, 25))
+                   transcriptome = c(25, 30))
 
 block.spls.helix &lt;- block.spls(X.list, indY = 5, ncomp = 2,
                                mode = &quot;regression&quot;, design = design,
@@ -3404,7 +3408,7 @@ is true for the four predictor blocks, whose successive components are
 uncorrelated by construction, but not for the response block. In
 <code>mode = &quot;regression&quot;</code>, the response is deflated on the
 predictor components rather than on its own. Its two components are
-therefore not forced apart and are 0.95 correlated here.</p>
+therefore not forced apart and are 0.94 correlated here.</p>
 <p>Because the axes are so similar, a variable strongly correlated with
 one will also be strongly correlated with the other. Its plotted point
 can then fall beyond a radius of 1. Each coordinate remains a valid
@@ -3418,9 +3422,8 @@ agrees with Section 2, where Q2 retained only one PLS1 component.</p>
 <p>The serum metabolites are named <code>metab_1</code>,
 <code>metab_2</code> and so on. They have a chemical class but no
 compound identifier because none is available in the release. Their
-loadings are therefore <strong>not biologically interpretable</strong>.
-The proteome, urine and transcriptome have feature-level
-annotations:</p>
+loadings are therefore not currently biologically interpretable. The
+proteome, urine and transcriptome have feature-level annotations:</p>
 <pre class="r"><code>head(helix$annotation$proteome)
 head(helix$annotation$urine)
 head(helix$annotation$serum)        # Class only, no compound names
@@ -3474,9 +3477,9 @@ correlations be compared directly? Consider the number of features in
 each block.</p></li>
 <li><p>What does the circos plot show that <code>plotVar</code> and
 <code>selectVar</code> do not? What do the colours around its outside
-<em>not</em> represent?</p></li>
-<li><p>Why is there no error rate for this model? What can you conclude
-from the analysis, and what can you not conclude?</p></li>
+represent?</p></li>
+<li><p>What can you conclude from the analysis, and what can you not
+conclude?</p></li>
 </ol>
 <button onclick="myFunction(&#39;q3&#39;)">
 <p>Show solutions</p>
@@ -3486,8 +3489,8 @@ from the analysis, and what can you not conclude?</p></li>
 <h3>Answers</h3>
 <ol style="list-style-type: decimal">
 <li><p>The <span style="color: #388ECC;">proteome</span> and <span style="color: #F68B33;">serum</span> metabolome track the response most
-closely, with correlations of 0.45 and 0.44, respectively. The <span style="color: #585858;">urine</span> metabolome follows at 0.35, and the
-<span style="color: #009E73;">transcriptome</span> is last at 0.29.
+closely, with correlations of 0.44 and 0.44, respectively. The <span style="color: #585858;">urine</span> metabolome follows at 0.34, and the
+<span style="color: #009E73;">transcriptome</span> is last at 0.28.
 These values should <strong>not</strong> be compared directly. The
 blocks contain 36, 177, 44 and 1,000 features, and correlations from a
 fitted model are not adjusted for block width. A component from a wide
@@ -3507,16 +3510,15 @@ both vary with the PCB congeners. The outer colours come from the
 cohort was supplied only because <code>circosPlot()</code> requires a
 factor of the correct length. The colours are <strong>not</strong> part
 of the model.</p></li>
-<li><p><code>perf()</code> has no method for these objects, and
-<code>tune.block.spls</code> does not exist. The <code>keepX</code>
-values were therefore fixed manually rather than evaluated by
-cross-validation. The conclusion is descriptive: <em>in these 896
-children, the four molecular blocks share a direction of variation with
-organochlorine body burden, most visibly in the proteome, and the
-selected features carry that variation.</em> The model does
-<strong>not</strong> establish that exposure can be predicted in a new
-child. The two-block PLS1 model in Section 2 provides weak evidence for
-prediction, with Q2 = 0.177 on one component.</p></li>
+<li><p>The <code>keepX</code> values were fixed manually rather than
+evaluated by cross-validation. The conclusion is descriptive: <em>in
+these 896 children, the four molecular blocks share a direction of
+variation with organochlorine body burden, most visibly in the proteome
+and the serum metabolome, and the selected features carry that
+variation.</em> The model does <strong>not</strong> establish that
+exposure can be predicted in a new child. The two-block PLS1 model in
+Section 2 provides weak evidence for prediction, with Q2 = 0.177 on one
+component.</p></li>
 </ol>
 </div>
 </div>
@@ -3524,21 +3526,20 @@ prediction, with Q2 = 0.177 on one component.</p></li>
 </div>
 <div id="to-go-further" class="section level2">
 <h2>To go further</h2>
-<p>The extensions below use the data already loaded. Change one element
-at a time so that you can attribute any differences to that change.</p>
+<p>Some analysis extensions you can explore in your own time:</p>
 <p><strong>Section 1, explore more blocks and characteristics.</strong>
 Run <code>pca()</code> on each of the other three omics blocks and the
-other eight exposure families; <code>names(helix$exposure)</code> lists
-them. Recolour the sample plots by asthma
-(<code>helix$outcomes$asthma</code>, with 92 cases among 896 children)
-or maternal education (<code>helix$outcomes$mat_edu</code>). Use
-<code>plot()</code> and <code>cor()</code> to compare a component with
-the continuous covariates in <code>helix$covariates</code>. Which
-exposure families measure one underlying pattern, as the organochlorines
-do, and which contain several distinct patterns?</p>
+other eight exposure families (see <code>names(helix$exposure)</code>
+that lists them). Recolour the sample plots by asthma outcome
+(<code>helix$outcomes$asthma</code>) or maternal education
+(<code>helix$outcomes$mat_edu</code>). Use <code>plot()</code> and
+<code>cor()</code> to compare a component with the continuous covariates
+in <code>helix$covariates</code>. Which exposure families measure one
+underlying pattern, as the organochlorines do, and which contain several
+distinct patterns?</p>
 <p><strong>Section 2, adjust for cohort.</strong> Remove cohort from
-both the response and the proteome, refit the model and compare the
-scatter plot with the original:</p>
+both the response and the proteome using a simple linear model and
+extracting the residuals, then fit a new PLS model:</p>
 <pre class="r"><code>Y.adj        &lt;- residuals(lm(Y ~ helix$outcomes$cohort))
 proteome.adj &lt;- residuals(lm(proteome ~ helix$outcomes$cohort))
 
@@ -3550,9 +3551,7 @@ plot(pls.adj$variates$X[, 1], Y.adj, pch = 16, col = &quot;#009E7366&quot;,
 abline(lm(Y.adj ~ pls.adj$variates$X[, 1]), lwd = 2)
 
 cor(pls.adj$variates$X[, 1], Y.adj)</code></pre>
-<p>Does the association remain? Colouring a plot by cohort is not
-equivalent to removing cohort from the model. A component shows only the
-variation that the model was fitted to capture.</p>
+<p>Does the association remain?</p>
 <p><strong>Section 2, change the predictor or response.</strong> Keep
 the same response and use the serum, urine or transcriptome as the
 predictor block. Alternatively, keep the proteome and change the
@@ -3568,11 +3567,10 @@ Concatenate the nine families into a single 81-variable response
 block:</p>
 <pre class="r"><code>env &lt;- do.call(cbind, helix$exposure)
 dim(env)</code></pre>
-<p>Fit the model, then determine what the response variate represents.
-Correlate each of the 81 variables with the variate and identify the
-families containing the largest correlations. A response block assembled
-by concatenation does not necessarily represent the broad label assigned
-to it.</p>
+<p>Fit a sparse block PLS model that also selects on the Y block, then
+determine what the response variate represents. Correlate each of the
+selected response variables with the variate and confirm whether those
+include the largest correlations.</p>
 <p><strong>Section 3, vary the model.</strong> Change the
 <code>keepX</code> values and compare the circos plot and selected
 features. Then set every off-diagonal entry of the design matrix to 1
@@ -3602,9 +3600,7 @@ analyses described in this manuscript were obtained from: Figshare <a href="http
 (project number 98813 accesed on MM/DD/YYYY) and github <a href="https://github.com/isglobal-exposomeHub/ExposomeDataChallenge2021/" class="uri">https://github.com/isglobal-exposomeHub/ExposomeDataChallenge2021/</a>.</p>
 </div>
 <p>The extract distributed with this practical is shared for teaching
-with the agreement of ISGlobal, with thanks to Augusto Anguita. We are
-grateful to the HELIX consortium and to the families who took part in
-the six cohorts.</p>
+with the agreement of ISGlobal.</p>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
@@ -3632,6 +3628,12 @@ Rohart, Florian, Benoit Gautier, Amrit Singh, and Kim-Anh Lê Cao. 2017.
 <span>“mixOmics: An r Package for ‘Omics Feature Selection and Multiple
 Data Integration.”</span> <em>PLoS Computational Biology</em> 13 (11):
 e1005752.
+</div>
+<div id="ref-Sin19" class="csl-entry">
+Singh, Amrit, Casey P Shannon, Benoı̂t Gautier, et al. 2019.
+<span>“DIABLO: An Integrative Approach for Identifying Key Molecular
+Drivers from Multi-Omics Assays.”</span> <em>Bioinformatics</em> 35
+(17): 3055–62.
 </div>
 <div id="ref-Sta87" class="csl-entry">
 Ståhle, Lars, and Svante Wold. 1987. <span>“Partial Least Squares
