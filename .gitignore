@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# R session and project cruft.
+# Note that `.RData` matches only a file of exactly that name -- a saved
+# workspace -- and not `Data/helix.RData`, which is the workshop data set and
+# IS tracked deliberately. Check with `git check-ignore -v` before assuming.
+.Rhistory
+.RData
+.Rproj.user/
+.Rapp.history
+*.Rproj
+
+# knitr / rmarkdown intermediates
+*_cache/
+*_files/
+
+# Base-graphics device output, produced when a script plots outside knitr
+Rplots.pdf
+
+# Local working notes for developers, not part of the workshop material.
+# Hand these to whoever picks the issue up; they are deliberately untracked.
+dev-notes/
