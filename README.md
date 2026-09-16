@@ -2,34 +2,29 @@
 
 ### Author: Prof Kim-Anh Lê Cao
 
-A hands-on practical applying multivariate analysis to exposome and multi-omics data
-with the [mixOmics](https://mixomics.org) R package, built for the ISGlobal exposome
-workshop. The session runs for about 1.5 hours and is built around a single practical
-that participants work through on their own laptops, using data from the HELIX study.
+A hands-on practical applying multivariate regression analysis to integrate exposome and multi-omics data
+with the [mixOmics](https://mixomics.org) R package, for the ISGlobal exposome
+workshop 2026. The hands-on session runs for about 1.5 hours. Participants work through the analyses on their own laptops, using data from the HELIX study.
 
 | Audience | Prerequisites | Duration |
 | --- | --- | --- |
-| Biologists and epidemiologists | A working knowledge of R: you should be comfortable running code and reading plots. No programming is required | ~ 1.5 hours |
+| Biologists and epidemiologists | A working knowledge of R: you should be comfortable running the provided R code, and amending the code as necessary | ~ 1.5 hours |
 
 ### Material
 
 - [**Practical link**](https://guides.mixomics.org/mxoorg-workshop-exposome-helix/practical/exposome_analysis.html)
 
-- [**Data**](Data/) — one `.RData` file, and the script that builds it
+- [**Data**](Data/) includes one `.RData` file and the script that builds it
 
 ### What the session covers
 
-The practical opens with a short quick start, running PCA to establish the workflow
-of every method in the package: run the method, plot the samples, plot the variables.
-It then works through three case studies, all on the same two data sets so that only
-the method changes:
+The practical goes through three case studies on the HELIX data:
 
 1. **PCA** on the HELIX proteome and on the organochlorine exposures — unsupervised
-   exploration of each in turn, colouring the children by sex, recruitment cohort and
-   BMI category to help interpret the result.
+   exploration of each in turn.
 2. **PLS1** — regression of a single exposure, summed serum PCBs, on the proteome,
-   then sparse PLS1 to select the proteins that carry the association.
-3. **block sPLS** — the same exposure family against four molecular blocks at once
+   then sparse PLS1 to select the proteins that might be associated with the response.
+3. **block sPLS** — the same exposure family integrated with four molecular blocks at once
    (proteome, serum metabolome, urine metabolome, transcriptome), the multiblock
    regression counterpart of DIABLO.
 
@@ -76,9 +71,7 @@ You should see `omics`, `exposure`, `outcomes`, `covariates`, `annotation` and
 
 ---
 
-## The data
-
-### Where it comes from
+## The HELIX data
 
 The data come from **HELIX** (Human Early-Life Exposome), released by ISGlobal for its
 **Exposome Data Challenge 2021**. HELIX is a collaborative project across six
@@ -86,7 +79,7 @@ established longitudinal population-based birth cohorts in six European countrie
 France, Greece, Lithuania, Norway, Spain and the United Kingdom. Mother–child pairs
 were followed from pregnancy, and the children were re-examined at roughly age 6 to 11.
 
-What makes the dataset unusual is its design. Each child is characterised broadly —
+Each child is characterised broadly —
 across chemical, outdoor, indoor and lifestyle exposures — with four molecular layers
 measured on the same children. That is the exposome idea: rather than one exposure and
 one disease, the whole measured environment at once.
@@ -137,84 +130,39 @@ helix
 └── provenance      # source, date, required citation, every processing step
 ```
 
-### What was and was not done to it
+### Pre-processing steps
 
-**No block was transformed here.** All four arrived already transformed, and in three
-different ways: the proteome and serum metabolome are log-transformed, the urine
-metabolome is log2 with a quantification floor at 0.05 µM, and the transcriptome is
-log2 and **per-gene centred**. Those states were established from the data rather than
-read off the upstream documentation, which is silent on urine.
+All four omics datasets were already transformed, and in three
+different ways: the proteome and serum metabolome were log-transformed, the urine
+metabolome was log2 transformed with a quantification floor at 0.05 µM, and the transcriptome was
+log2 and per-gene centred.
 
-**No filtering removed anything except in the transcriptome.** The release ships
-complete, imputed tables, and the three small blocks are curated panels of fewer than
-200 features.
-
-**The transcriptome was reduced for size, not for science.** It ships at 28,738
-transcripts, was reduced to 5,000 in the scoping work (call rate ≥ 80%, then variance),
-and is reduced here to the **top 1,000 of those by variance**. The 1,000 retain 55.6%
-of the 5,000-probe variance and every one of them has a gene symbol, so loadings stay
-interpretable. The reason is download size: the full 5,000 makes this file about 34 MB
-against roughly 7 MB for 1,000, which matters when a room of people clones the
-repository at once. This is a teaching-material decision and should not be mistaken
-for a scientific one.
+All datasets included the original 
+complete, imputed tables, except for the transcriptome, which was reduced in size (from 28,738 transcripts to the top 1,000 highly variable transcripts) to ease this practical activity.
 
 **Postnatal exposures only.** Pregnancy-window versions of the same families exist in
-the release and are excluded deliberately: an exposure measured seven to ten years
-before an assay is a different and much weaker question.
+the release and were excluded deliberately for this type of integrative analysis.
 
-**Two things worth knowing before interpreting results.** The serum metabolome
-features are indexed `metab_1` … `metab_177` with a chemical class and no compound
-identifiers, because none exist upstream, so **loadings on that block are not
-biologically interpretable**. And `bmi_cat` has only 9 children in its first level, so
-it should not be used as a response.
-
-**Cohort levels are the codes 1–6.** The release documents only "Cohort of inclusion
-(1 to 6)" and nowhere maps those codes to the six countries, so the mapping has
-deliberately not been guessed.
 
 `Data/build_helix_data.R` produces the file from the prepared blocks and records every
 step in `helix$provenance`.
 
 ---
 
-## Licence, citation and acknowledgement
+## Acknowledgement
 
-The HELIX release permits educational use: in the words of its own documentation,
-*"These data may also be used for educational purposes."*
+The HELIX release permits educational use.
 
-**A specific citation paragraph is required on any publication**, and it must be added
-verbatim rather than paraphrased:
 
-> This data were created as part of the ISGlobal Exposome data challenge 2021, presented in
-> this publication (preprint: https://arxiv.org/abs/2202.01680 - under review in Env. Int.).
-> The HELIX study [Vrijheid, Slama, et al. EHP 2014; Maitre et al. 2018 BMJ Open]
-> represents a collaborative project across six established and ongoing longitudinal
-> population-based birth cohort studies in six European countries (France, Greece,
-> Lithuania, Norway, Spain, and the United Kingdom). The research leading to these results
-> has received funding from the European Community's Seventh Framework Programme
-> (FP7/2007-2013) under grant agreement no 308333 – the HELIX project and the
-> H2020-EU.3.1.2. - Preventing Disease Programme under grant agreement no 874583 (ATHLETE
-> project). The data used for the analyses described in this manuscript were obtained from:
-> Figshare https://figshare.com/account/home#/projects/98813 (project number 98813 accesed
-> on MM/DD/YYYY) and github
-> https://github.com/isglobal-exposomeHub/ExposomeDataChallenge2021/.
+This data were created as part of the ISGlobal Exposome data challenge 2021, presented in this publication (preprint: https://arxiv.org/abs/2202.01680 - under review in Env. Int.). The HELIX study [Vrijheid, Slama, et al. EHP 2014; Maitre et al. 2018 BMJ Open] represents a collaborative project across six established and ongoing longitudinal
+population-based birth cohort studies in six European countries (France, Greece, Lithuania, Norway, Spain, and the United Kingdom). The research leading to these results has received funding from the European Community's Seventh Framework Programme (FP7/2007-2013) under grant agreement no 308333 – the HELIX project and the H2020-EU.3.1.2. - Preventing Disease Programme under grant agreement no 874583 (ATHLETE project). The data used for the analyses described in this workshop were obtained from the Exposome Data Challenge GitHub repository, https://github.com/isglobal-exposomeHub/ExposomeDataChallenge2021/, with the data files retrieved from their Git LFS store at https://github.com/isglobal-brge/brge_data_large (`data/ExposomeDataChallenge2021`, commit `ba43108`) on 7 September 2026. The same materials are also deposited on Figshare under project number 98813.
 
-### Acknowledgement
-
-> **Draft — for review before publication.** This wording has not been agreed with
-> ISGlobal and should be checked with Augusto Anguita before this repository is
-> publicised.
-
-The extract distributed in this repository is shared for workshop teaching with the
-agreement of ISGlobal, with thanks to Augusto Anguita. We are grateful to the HELIX
-consortium, and to the families who took part in the six cohorts, without whom none of
-this material would exist.
 
 ---
 
 ## Building and rendering
 
-The practical renders to HTML, which is what participants read, and the rendered file
+The practical renders to HTML, and the rendered file
 is committed.
 
 ```sh
@@ -229,9 +177,9 @@ Rscript -e 'rmarkdown::render("practical/exposome_analysis.Rmd", output_format =
 The `01-options` chunk near the top of the `.Rmd` sets one flag, `show.results`,
 which controls the output of every code chunk in the practical:
 
-- `show.results <- FALSE` renders the code and nothing else. **This is the version
+- `show.results <- FALSE` renders only the code. **This is the version
   participants read**: they run each line themselves and see the results in their own
-  console. The committed HTML is built this way, and is about 1 MB.
+  console. The committed HTML is built this way.
 - `show.results <- TRUE` also prints the results and draws the figures. Use it to
   check the material before a workshop. The HTML is then about 15 MB, because the
   twenty-five figures are embedded in it, so do not commit a render made this way.
