@@ -21,3 +21,6 @@ Rplots.pdf
 # Local working notes for developers, not part of the workshop material.
 # Hand these to whoever picks the issue up; they are deliberately untracked.
 dev-notes/
+
+# Working prompt for regenerating the figures. A tool, not teaching material.
+illustration-prompt.md
