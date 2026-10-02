@@ -83,6 +83,29 @@ options(width=80)
 ```{r 01-options, include=FALSE}
 library(knitr)
 
+# ---------------------------------------------------------------------------
+# Maintainer notes. This chunk is include=FALSE, so none of this reaches the
+# rendered HTML that participants read.
+#
+# To render:
+#
+#   # pandoc is not always on PATH; a usable copy ships with Quarto
+#   export RSTUDIO_PANDOC="/Applications/quarto/bin/tools"
+#   Rscript -e 'rmarkdown::render("practical/exposome_analysis.Rmd",
+#                                 output_format = "html_document")'
+#
+# Render twice and diff the two files: with seed passed to every perf() call
+# they must come out identical. Any difference means a seed was missed.
+#
+# To rebuild the data set you need the prepared blocks from the scoping
+# repository; see the header of Data/build_helix_data.R, then:
+#
+#   Rscript Data/build_helix_data.R
+#
+# Commit the HTML built with show.results <- FALSE (see below). A render made
+# with TRUE embeds twenty-five figures and comes to about 15 MB.
+# ---------------------------------------------------------------------------
+
 # Show or hide the output of every code chunk.
 #
 #   TRUE  - print the results and draw the figures. Use this to check the
@@ -187,7 +210,7 @@ The samples from the same children are in the **same order**, which is required 
 | `helix$annotation` | feature annotation for each omics block, and the exposure codebook |
 | `helix$provenance` | where the data came from, and processing steps applied |
 
-The [repository README](https://github.com/mixOmics-org/mxoorg-workshop-exposome-helix#the-data)
+The [repository README](https://github.com/mixOmics-org/mxoorg-workshop-exposome-helix#the-helix-data)
 describes how the extract was prepared and what processing was applied to each
 omics block.
 
@@ -272,8 +295,13 @@ We consider the following two data sets:
 
 -  the **organochlorines** data set contains nine persistent chemical pollutants
 measured in each child's serum. The
-[repository README](https://github.com/mixOmics-org/mxoorg-workshop-exposome-helix#the-data)
+[repository README](https://github.com/mixOmics-org/mxoorg-workshop-exposome-helix#the-helix-data)
 describes how the datasets were prepared.
+
+```{r 01-figure, echo=FALSE, fig.show='asis', results='asis', out.width='42%', fig.cap="PCA describes a single data matrix: the samples are the rows and the variables are the columns. There is no response, so the method looks only at how the variables in that one matrix vary together."}
+knitr::include_graphics("figures/01-pca.svg")
+```
+
 
 ## Load the data
 
@@ -440,6 +468,11 @@ Show solutions
 We now ask whether variation in the proteome can explain variation in a **single
 exposure**. Partial Least Squares regression with one response is called PLS1
 [@Lec08].
+
+```{r 02-figure, echo=FALSE, fig.show='asis', results='asis', out.width='58%', fig.cap="PLS1 relates one data matrix to one response. The matrix holds the samples in rows and the variables in columns, and the response is a single column carrying one measurement for each of those same samples."}
+knitr::include_graphics("figures/02-pls1.svg")
+```
+
 
 ## The response
 
@@ -679,6 +712,11 @@ DIABLO [@Sin19], with a continuous response block in place of a class label.
 
 The organochlorines will be the response *matrix*, and the other omics datasets
 (proteome, serum metabolome, urine metabolome and transcriptome) the predictors.
+
+```{r 03-figure, echo=FALSE, fig.show='asis', results='asis', out.width='100%', fig.cap="Block sPLS relates several predictor matrices to one response matrix. Each block carries a different number of variables, but every block holds the same samples in the same order, which is what allows them to be modelled together."}
+knitr::include_graphics("figures/03-block-spls.svg")
+```
+
 
 <p>
 ::: info
@@ -997,8 +1035,6 @@ Further analyses and vignettes are available at
 
 The data used in this practical come from the HELIX study and were released by
 ISGlobal for the Exposome Data Challenge 2021. Educational use is permitted.
-The following citation paragraph must appear verbatim in any publication
-arising from these data:
 
 ::: required-citation
 This data were created as part of the ISGlobal Exposome data challenge 2021, presented in

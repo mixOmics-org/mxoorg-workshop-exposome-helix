@@ -14,14 +14,14 @@ workshop 2026. The hands-on session runs for about 1.5 hours. Participants work 
 
 - [**Practical link**](https://guides.mixomics.org/mxoorg-workshop-exposome-helix/practical/exposome_analysis.html)
 
-- [**Data**](Data/) includes one `.RData` file and the script that builds it
+- [**Data**](Data/) includes one `.RData` file and the script that built the data (the latter is not required for this practical)
 
 ### What the session covers
 
 The practical goes through three case studies on the HELIX data:
 
 1. **PCA** on the HELIX proteome and on the organochlorine exposures — unsupervised
-   exploration of each in turn.
+   exploration of each dataset.
 2. **PLS1** — regression of a single exposure, summed serum PCBs, on the proteome,
    then sparse PLS1 to select the proteins that might be associated with the response.
 3. **block sPLS** — the same exposure family integrated with four molecular blocks at once
@@ -57,7 +57,7 @@ library(mixOmics)
 
 **2. Download this repository, and load the data once.** Clone it, or use
 **Code > Download ZIP** on GitHub. The data file is about 7 MB, so please do this
-**before** the session rather than over the venue's wifi at the start. Then check it
+**before** the session. Then check it
 loads:
 
 ```r
@@ -160,50 +160,14 @@ population-based birth cohort studies in six European countries (France, Greece,
 
 ---
 
-## Building and rendering
-
-The practical renders to HTML, and the rendered file
-is committed.
-
-```sh
-# pandoc is not always on PATH; a usable copy ships with Quarto
-export RSTUDIO_PANDOC="/Applications/quarto/bin/tools"
-
-Rscript -e 'rmarkdown::render("practical/exposome_analysis.Rmd", output_format = "html_document")'
-```
-
-### Showing or hiding the chunk output
-
-The `01-options` chunk near the top of the `.Rmd` sets one flag, `show.results`,
-which controls the output of every code chunk in the practical:
-
-- `show.results <- FALSE` renders only the code. **This is the version
-  participants read**: they run each line themselves and see the results in their own
-  console. The committed HTML is built this way.
-- `show.results <- TRUE` also prints the results and draws the figures. Use it to
-  check the material before a workshop. The HTML is then about 15 MB, because the
-  twenty-five figures are embedded in it, so do not commit a render made this way.
-
-Inline `` `r ...` `` results, such as the numbers quoted in the exercise answers, are
-computed either way and always appear.
-
-To rebuild the data set you need the prepared blocks from the scoping repository; see
-the header of `Data/build_helix_data.R`.
-
-```sh
-Rscript Data/build_helix_data.R
-```
-
-### Provenance
+## Provenance
 
 The practical is adapted from the
 [introduction to mixOmics workshop](https://github.com/mixOmics-org/mxoorg-workshop-intro-mixomics),
-keeping its structure and much of its prose, with the methods changed from the
-discriminant family to the regression family. The data preparation derives from the
-Lê Cao Lab's scoping of the Exposome Data Challenge release, which records every
-preparation decision and the reasoning behind it.
+keeping its structure, with the data and methods changed from the
+discriminant family to the regression family. The data were prepared by Kim-Anh Lê Cao.
 
-### Licence
+## Licence
 
 Copyright © 2026 Kim-Anh Lê Cao. Licensed under AGPL-3.0-or-later.
 See [LICENSE](LICENSE) for the full text.

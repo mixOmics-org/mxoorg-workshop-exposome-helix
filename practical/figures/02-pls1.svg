@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="439" height="331" viewBox="61 45 439 331" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+  <!-- White Background -->
+  <rect x="61" y="45" width="439" height="331" fill="white"/>
+
+  <!-- Solid Arrowhead Defs -->
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#384D69"/>
+    </marker>
+  </defs>
+
+  <!-- Color Ramps as Arrays for generation: manual scattered sampling strategy used -->
+  <!-- predictor, first block: #384D69 #4A6080 #647C96 #88A1BC #AAC0D4 #CBD8E5 #EAF0F6 -->
+  <!-- response: #D9A02E #EEB340 #F1C165 #F5CF8A #F8DDAF #FBEBD4 #FDF7EC -->
+
+  <!-- LEFT PANEL -->
+  <g id="panel_left">
+    <!-- Predictor Matrix X block (140, 120, 220, 240) radius 3 -->
+    <rect x="140" y="120" width="220" height="240" rx="3" fill="none"/>
+    
+    <!-- Matrix X Cells (Sampled blue ramp, identical patterns for consistency between panels) -->
+    <!-- Row 1: 5 1 6 2 4 0 3 5 2 6 1 -->
+    <rect x="140" y="120" width="20" height="20" fill="#CBD8E5"/><rect x="160" y="120" width="20" height="20" fill="#4A6080"/><rect x="180" y="120" width="20" height="20" fill="#EAF0F6"/><rect x="200" y="120" width="20" height="20" fill="#647C96"/><rect x="220" y="120" width="20" height="20" fill="#AAC0D4"/><rect x="240" y="120" width="20" height="20" fill="#384D69"/><rect x="260" y="120" width="20" height="20" fill="#88A1BC"/><rect x="280" y="120" width="20" height="20" fill="#CBD8E5"/><rect x="300" y="120" width="20" height="20" fill="#647C96"/><rect x="320" y="120" width="20" height="20" fill="#EAF0F6"/><rect x="340" y="120" width="20" height="20" fill="#4A6080"/>
+    <!-- Row 2: 0 4 2 5 1 6 3 0 4 2 5 -->
+    <rect x="140" y="140" width="20" height="20" fill="#384D69"/><rect x="160" y="140" width="20" height="20" fill="#AAC0D4"/><rect x="180" y="140" width="20" height="20" fill="#647C96"/><rect x="200" y="140" width="20" height="20" fill="#CBD8E5"/><rect x="260" y="140" width="20" height="20" fill="#4A6080"/><rect x="220" y="140" width="20" height="20" fill="#EAF0F6"/><rect x="240" y="140" width="20" height="20" fill="#88A1BC"/><rect x="300" y="140" width="20" height="20" fill="#384D69"/><rect x="280" y="140" width="20" height="20" fill="#AAC0D4"/><rect x="320" y="140" width="20" height="20" fill="#647C96"/><rect x="340" y="140" width="20" height="20" fill="#CBD8E5"/>
+    <!-- Row 3: 3 6 1 4 2 0 5 3 6 1 4 -->
+    <rect x="140" y="160" width="20" height="20" fill="#88A1BC"/><rect x="160" y="160" width="20" height="20" fill="#EAF0F6"/><rect x="180" y="160" width="20" height="20" fill="#4A6080"/><rect x="200" y="160" width="20" height="20" fill="#AAC0D4"/><rect x="260" y="160" width="20" height="20" fill="#647C96"/><rect x="220" y="160" width="20" height="20" fill="#384D69"/><rect x="240" y="160" width="20" height="20" fill="#CBD8E5"/><rect x="300" y="160" width="20" height="20" fill="#88A1BC"/><rect x="280" y="160" width="20" height="20" fill="#EAF0F6"/><rect x="320" y="160" width="20" height="20" fill="#4A6080"/><rect x="340" y="160" width="20" height="20" fill="#AAC0D4"/>
+    <!-- Row 4: 5 2 0 3 6 1 4 5 2 0 3 -->
+    <rect x="140" y="180" width="20" height="20" fill="#CBD8E5"/><rect x="160" y="180" width="20" height="20" fill="#647C96"/><rect x="180" y="180" width="20" height="20" fill="#384D69"/><rect x="200" y="180" width="20" height="20" fill="#88A1BC"/><rect x="260" y="180" width="20" height="20" fill="#EAF0F6"/><rect x="220" y="180" width="20" height="20" fill="#4A6080"/><rect x="240" y="180" width="20" height="20" fill="#AAC0D4"/><rect x="300" y="180" width="20" height="20" fill="#CBD8E5"/><rect x="280" y="180" width="20" height="20" fill="#647C96"/><rect x="320" y="180" width="20" height="20" fill="#384D69"/><rect x="340" y="180" width="20" height="20" fill="#88A1BC"/>
+    <!-- Row 5: 1 4 2 6 3 0 5 1 4 2 6 -->
+    <rect x="140" y="200" width="20" height="20" fill="#4A6080"/><rect x="160" y="200" width="20" height="20" fill="#AAC0D4"/><rect x="180" y="200" width="20" height="20" fill="#647C96"/><rect x="200" y="200" width="20" height="20" fill="#EAF0F6"/><rect x="260" y="200" width="20" height="20" fill="#88A1BC"/><rect x="220" y="200" width="20" height="20" fill="#384D69"/><rect x="240" y="200" width="20" height="20" fill="#CBD8E5"/><rect x="300" y="200" width="20" height="20" fill="#4A6080"/><rect x="280" y="200" width="20" height="20" fill="#AAC0D4"/><rect x="320" y="200" width="20" height="20" fill="#647C96"/><rect x="340" y="200" width="20" height="20" fill="#EAF0F6"/>
+    <!-- Row 6: 6 3 0 5 1 4 2 6 3 0 5 -->
+    <rect x="140" y="220" width="20" height="20" fill="#EAF0F6"/><rect x="160" y="220" width="20" height="20" fill="#88A1BC"/><rect x="180" y="220" width="20" height="20" fill="#384D69"/><rect x="200" y="220" width="20" height="20" fill="#CBD8E5"/><rect x="260" y="220" width="20" height="20" fill="#4A6080"/><rect x="220" y="220" width="20" height="20" fill="#AAC0D4"/><rect x="240" y="220" width="20" height="20" fill="#647C96"/><rect x="300" y="220" width="20" height="20" fill="#EAF0F6"/><rect x="280" y="220" width="20" height="20" fill="#88A1BC"/><rect x="320" y="220" width="20" height="20" fill="#384D69"/><rect x="340" y="220" width="20" height="20" fill="#CBD8E5"/>
+    <!-- Row 7: 2 5 1 6 4 0 3 2 5 1 6 -->
+    <rect x="140" y="240" width="20" height="20" fill="#647C96"/><rect x="160" y="240" width="20" height="20" fill="#CBD8E5"/><rect x="180" y="240" width="20" height="20" fill="#4A6080"/><rect x="200" y="240" width="20" height="20" fill="#EAF0F6"/><rect x="260" y="240" width="20" height="20" fill="#AAC0D4"/><rect x="220" y="240" width="20" height="20" fill="#384D69"/><rect x="240" y="240" width="20" height="20" fill="#88A1BC"/><rect x="300" y="240" width="20" height="20" fill="#647C96"/><rect x="280" y="240" width="20" height="20" fill="#CBD8E5"/><rect x="320" y="240" width="20" height="20" fill="#4A6080"/><rect x="340" y="240" width="20" height="20" fill="#EAF0F6"/>
+    <!-- Row 8: 4 0 3 2 5 1 6 4 0 3 2 -->
+    <rect x="140" y="260" width="20" height="20" fill="#AAC0D4"/><rect x="160" y="260" width="20" height="20" fill="#384D69"/><rect x="180" y="260" width="20" height="20" fill="#88A1BC"/><rect x="200" y="260" width="20" height="20" fill="#647C96"/><rect x="260" y="260" width="20" height="20" fill="#CBD8E5"/><rect x="220" y="260" width="20" height="20" fill="#4A6080"/><rect x="240" y="260" width="20" height="20" fill="#EAF0F6"/><rect x="300" y="260" width="20" height="20" fill="#AAC0D4"/><rect x="280" y="260" width="20" height="20" fill="#384D69"/><rect x="320" y="260" width="20" height="20" fill="#88A1BC"/><rect x="340" y="260" width="20" height="20" fill="#647C96"/>
+    <!-- Row 9: 6 1 4 2 0 5 3 6 1 4 2 -->
+    <rect x="140" y="280" width="20" height="20" fill="#EAF0F6"/><rect x="160" y="280" width="20" height="20" fill="#4A6080"/><rect x="180" y="280" width="20" height="20" fill="#AAC0D4"/><rect x="200" y="280" width="20" height="20" fill="#647C96"/><rect x="260" y="280" width="20" height="20" fill="#384D69"/><rect x="220" y="280" width="20" height="20" fill="#CBD8E5"/><rect x="240" y="280" width="20" height="20" fill="#88A1BC"/><rect x="300" y="280" width="20" height="20" fill="#EAF0F6"/><rect x="280" y="280" width="20" height="20" fill="#4A6080"/><rect x="320" y="280" width="20" height="20" fill="#AAC0D4"/><rect x="340" y="280" width="20" height="20" fill="#647C96"/>
+    <!-- Row 10: 2 5 1 6 3 0 4 2 5 1 6 -->
+    <rect x="140" y="300" width="20" height="20" fill="#647C96"/><rect x="160" y="300" width="20" height="20" fill="#CBD8E5"/><rect x="180" y="300" width="20" height="20" fill="#4A6080"/><rect x="200" y="300" width="20" height="20" fill="#EAF0F6"/><rect x="260" y="300" width="20" height="20" fill="#88A1BC"/><rect x="220" y="300" width="20" height="20" fill="#384D69"/><rect x="240" y="300" width="20" height="20" fill="#AAC0D4"/><rect x="300" y="300" width="20" height="20" fill="#647C96"/><rect x="280" y="300" width="20" height="20" fill="#CBD8E5"/><rect x="320" y="300" width="20" height="20" fill="#4A6080"/><rect x="340" y="300" width="20" height="20" fill="#EAF0F6"/>
+    <!-- Row 11: 4 0 3 2 5 1 6 4 0 3 2 -->
+    <rect x="140" y="320" width="20" height="20" fill="#AAC0D4"/><rect x="160" y="320" width="20" height="20" fill="#384D69"/><rect x="180" y="320" width="20" height="20" fill="#88A1BC"/><rect x="200" y="320" width="20" height="20" fill="#647C96"/><rect x="260" y="320" width="20" height="20" fill="#CBD8E5"/><rect x="220" y="320" width="20" height="20" fill="#4A6080"/><rect x="240" y="320" width="20" height="20" fill="#EAF0F6"/><rect x="300" y="320" width="20" height="20" fill="#AAC0D4"/><rect x="280" y="320" width="20" height="20" fill="#384D69"/><rect x="320" y="320" width="20" height="20" fill="#88A1BC"/><rect x="340" y="320" width="20" height="20" fill="#647C96"/>
+    <!-- Row 12: 6 1 4 2 0 5 3 6 1 4 2 -->
+    <rect x="140" y="340" width="20" height="20" fill="#EAF0F6"/><rect x="160" y="340" width="20" height="20" fill="#4A6080"/><rect x="180" y="340" width="20" height="20" fill="#AAC0D4"/><rect x="200" y="340" width="20" height="20" fill="#647C96"/><rect x="260" y="340" width="20" height="20" fill="#384D69"/><rect x="220" y="340" width="20" height="20" fill="#CBD8E5"/><rect x="240" y="340" width="20" height="20" fill="#88A1BC"/><rect x="300" y="340" width="20" height="20" fill="#EAF0F6"/><rect x="280" y="340" width="20" height="20" fill="#4A6080"/><rect x="320" y="340" width="20" height="20" fill="#AAC0D4"/><rect x="340" y="340" width="20" height="20" fill="#647C96"/>
+
+    <!-- Matrix X Label (Inside grid, centered on white plate) -->
+    <g transform="translate(250, 240)">
+      <rect x="-60" y="-37" width="120" height="74" rx="3" fill="white" fill-opacity="0.88"/>
+      <text font-size="20" fill="#384D69" text-anchor="middle">
+        <tspan x="0" y="-8" font-style="italic">X</tspan>
+        <tspan x="0" y="24">(<tspan font-style="italic">N</tspan> &#215; <tspan font-style="italic">P</tspan>)</tspan>
+      </text>
+    </g>
+
+    <!-- Matrix X Axis Label Arrows and Text -->
+    <line x1="114" y1="360" x2="114" y2="120" stroke="#384D69" stroke-width="1.5" marker-end="url(#head)"/>
+    <g transform="translate(86, 240) rotate(-90)">
+      <text x="0" y="6" font-size="18" fill="#384D69" text-anchor="middle">
+        <tspan font-style="italic">N</tspan> samples
+      </text>
+    </g>
+    <line x1="140" y1="94" x2="360" y2="94" stroke="#384D69" stroke-width="1.5" marker-end="url(#head)"/>
+    <text x="250" y="74" font-size="18" fill="#384D69" text-anchor="middle">
+      <tspan font-style="italic">P</tspan> features
+    </text>
+
+    <!-- Arrow matrix -> response -->
+    <line x1="370" y1="240" x2="448" y2="240" stroke="#384D69" stroke-width="1.5" marker-end="url(#head)"/>
+
+    <!-- Response vector y block (458, 120, 26, 240) radius 3 -->
+    <rect x="458" y="120" width="26" height="240" rx="3" fill="none"/>
+    <!-- Vector y Cells (Sampled amber ramp) -->
+    <!-- Pattern: 4 1 6 2 5 0 3 4 2 6 1 5 -->
+    <rect x="458" y="120" width="26" height="20" fill="#F8DDAF"/><rect x="458" y="140" width="26" height="20" fill="#EEB340"/><rect x="458" y="160" width="26" height="20" fill="#FDF7EC"/><rect x="458" y="180" width="26" height="20" fill="#F1C165"/><rect x="458" y="200" width="26" height="20" fill="#FBEBD4"/><rect x="458" y="220" width="26" height="20" fill="#D9A02E"/><rect x="458" y="240" width="26" height="20" fill="#F5CF8A"/><rect x="458" y="260" width="26" height="20" fill="#F8DDAF"/><rect x="458" y="280" width="26" height="20" fill="#F1C165"/><rect x="458" y="300" width="26" height="20" fill="#FDF7EC"/><rect x="458" y="320" width="26" height="20" fill="#EEB340"/><rect x="458" y="340" width="26" height="20" fill="#FBEBD4"/>
+    
+    <!-- Vector y Label (Above column, centered, #D9A02E, 18 px) -->
+    <text x="471" y="100" font-size="18" fill="#D9A02E" text-anchor="middle">
+      <tspan font-style="italic">y</tspan>
+    </text>
+  </g>
+
+
+
+</svg>

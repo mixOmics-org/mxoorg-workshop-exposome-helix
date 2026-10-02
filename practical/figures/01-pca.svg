@@ -1,0 +1,244 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="321" height="349" viewBox="-16 80 321 349" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+  <!-- White Background -->
+  <rect width="100%" height="100%" fill="white"/>
+
+  <!-- Data Matrix (X) placed in the left third -->
+  <g id="matrix" transform="translate(50, 150)">
+    <!-- Main matrix block background with 3px corner radius -->
+    <rect width="239" height="263" rx="3" fill="none"/>
+
+    <!-- Pseudo-random cell sampling from the color ramp, with white gaps -->
+    <!-- Define the ramp colors locally as entities for easier reference -->
+    <!-- #384D69 (1), #4A6080 (2), #647C96 (3), #88A1BC (4), #AAC0D4 (5), #CBD8E5 (6), #EAF0F6 (7) -->
+
+    <!-- Row 1 -->
+    <rect x="0" y="0" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="16" y="0" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="32" y="0" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="48" y="0" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="64" y="0" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="80" y="0" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="96" y="0" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="112" y="0" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="128" y="0" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="144" y="0" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="160" y="0" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="176" y="0" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="192" y="0" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="208" y="0" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="224" y="0" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+
+    <!-- Row 2 -->
+    <rect x="0" y="22" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="16" y="22" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="32" y="22" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="48" y="22" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="64" y="22" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="80" y="22" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="96" y="22" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="112" y="22" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="128" y="22" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="144" y="22" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="160" y="22" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="176" y="22" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="192" y="22" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="208" y="22" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="224" y="22" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+
+    <!-- Row 3 -->
+    <rect x="0" y="44" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="16" y="44" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="32" y="44" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="48" y="44" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="64" y="44" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="80" y="44" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="96" y="44" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="112" y="44" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="128" y="44" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="144" y="44" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="160" y="44" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="176" y="44" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="192" y="44" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="208" y="44" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="224" y="44" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+
+    <!-- Row 4 -->
+    <rect x="0" y="66" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="16" y="66" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="32" y="66" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="48" y="66" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="64" y="66" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="80" y="66" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="96" y="66" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="112" y="66" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="128" y="66" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="144" y="66" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="160" y="66" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="176" y="66" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="192" y="66" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="208" y="66" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="224" y="66" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+
+    <!-- Row 5 -->
+    <rect x="0" y="88" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="16" y="88" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="32" y="88" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="48" y="88" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="64" y="88" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="80" y="88" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="96" y="88" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="112" y="88" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="128" y="88" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="144" y="88" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="160" y="88" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="176" y="88" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="192" y="88" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="208" y="88" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="224" y="88" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+
+    <!-- Row 6 -->
+    <rect x="0" y="110" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="16" y="110" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="32" y="110" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="48" y="110" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="64" y="110" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="80" y="110" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="96" y="110" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="112" y="110" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="128" y="110" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="144" y="110" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="160" y="110" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="176" y="110" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="192" y="110" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="208" y="110" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="224" y="110" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+
+    <!-- Row 7 -->
+    <rect x="0" y="132" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="16" y="132" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="32" y="132" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="48" y="132" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="64" y="132" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="80" y="132" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="96" y="132" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="112" y="132" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="128" y="132" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="144" y="132" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="160" y="132" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="176" y="132" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="192" y="132" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="208" y="132" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="224" y="132" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+
+    <!-- Row 8 -->
+    <rect x="0" y="154" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="16" y="154" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="32" y="154" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="48" y="154" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="64" y="154" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="80" y="154" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="96" y="154" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="112" y="154" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="128" y="154" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="144" y="154" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="160" y="154" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="176" y="154" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="192" y="154" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="208" y="154" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="224" y="154" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+
+    <!-- Row 9 -->
+    <rect x="0" y="176" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="16" y="176" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="32" y="176" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="48" y="176" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="64" y="176" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="80" y="176" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="96" y="176" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="112" y="176" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="128" y="176" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="144" y="176" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="160" y="176" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="176" y="176" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="192" y="176" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="208" y="176" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="224" y="176" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+
+    <!-- Row 10 -->
+    <rect x="0" y="198" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="16" y="198" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="32" y="198" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="48" y="198" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="64" y="198" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="80" y="198" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="96" y="198" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="112" y="198" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="128" y="198" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="144" y="198" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="160" y="198" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="176" y="198" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="192" y="198" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="208" y="198" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="224" y="198" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+
+    <!-- Row 11 -->
+    <rect x="0" y="220" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="16" y="220" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="32" y="220" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="48" y="220" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="64" y="220" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="80" y="220" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="96" y="220" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="112" y="220" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="128" y="220" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="144" y="220" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="160" y="220" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="176" y="220" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="192" y="220" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="208" y="220" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="224" y="220" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+
+    <!-- Row 12 -->
+    <rect x="0" y="242" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="16" y="242" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="32" y="242" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="48" y="242" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="64" y="242" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="80" y="242" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="96" y="242" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="112" y="242" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+    <rect x="128" y="242" width="15" height="21" fill="#AAC0D4"/> <!-- 5 -->
+    <rect x="144" y="242" width="15" height="21" fill="#EAF0F6"/> <!-- 7 -->
+    <rect x="160" y="242" width="15" height="21" fill="#CBD8E5"/> <!-- 6 -->
+    <rect x="176" y="242" width="15" height="21" fill="#384D69"/> <!-- 1 -->
+    <rect x="192" y="242" width="15" height="21" fill="#647C96"/> <!-- 3 -->
+    <rect x="208" y="242" width="15" height="21" fill="#88A1BC"/> <!-- 4 -->
+    <rect x="224" y="242" width="15" height="21" fill="#4A6080"/> <!-- 2 -->
+
+    <!-- Matrix Name Label: X (N × P) -->
+    <g transform="translate(119.5, 131.5)">
+      <rect x="-62" y="-22" width="124" height="44" rx="3" fill="white" opacity="0.88"/>
+      <text x="0" y="8" font-size="22" fill="#384D69" text-anchor="middle"><tspan font-style="italic">X</tspan> (<tspan font-style="italic">N</tspan> &#215; <tspan font-style="italic">P</tspan>)</text>
+    </g>
+  </g>
+
+  <!-- Columns Axis Label: P features -->
+  <g id="cols-label" transform="translate(169.5, 124)">
+    <line x1="-119.5" y1="0" x2="119.5" y2="0" stroke="#384D69" stroke-width="1.5"/>
+    <polygon points="119.5,0 114.5,-2.5 114.5,2.5" fill="#384D69"/>
+    <text x="0" y="-15" font-size="18" fill="#384D69" text-anchor="middle">
+      <tspan font-style="italic">P</tspan> features
+    </text>
+  </g>
+
+  <!-- Rows Axis Label: N samples -->
+  <g id="rows-label" transform="translate(24, 281.5)">
+    <line x1="0" y1="131.5" x2="0" y2="-131.5" stroke="#384D69" stroke-width="1.5"/>
+    <polygon points="0,-131.5 -2.5,-126.5 2.5,-126.5" fill="#384D69"/>
+    <g transform="translate(-15, 0) rotate(-90)">
+      <text x="0" y="6" font-size="18" fill="#384D69" text-anchor="middle">
+        <tspan font-style="italic">N</tspan> samples
+      </text>
+    </g>
+  </g>
+</svg>
