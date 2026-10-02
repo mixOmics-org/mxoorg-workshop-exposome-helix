@@ -298,6 +298,11 @@ measured in each child's serum. The
 [repository README](https://github.com/mixOmics-org/mxoorg-workshop-exposome-helix#the-helix-data)
 describes how the datasets were prepared.
 
+```{r 01-figure, echo=FALSE, fig.show='asis', results='asis', out.width='42%', fig.cap="PCA describes a single data matrix: the samples are the rows and the variables are the columns. There is no response, so the method looks only at how the variables in that one matrix vary together."}
+knitr::include_graphics("figures/01-pca.svg")
+```
+
+
 ## Load the data
 
 We store each omics dataset as an object. In the sections that follow, `proteome` and
@@ -463,6 +468,11 @@ Show solutions
 We now ask whether variation in the proteome can explain variation in a **single
 exposure**. Partial Least Squares regression with one response is called PLS1
 [@Lec08].
+
+```{r 02-figure, echo=FALSE, fig.show='asis', results='asis', out.width='58%', fig.cap="PLS1 relates one data matrix to one response. The matrix holds the samples in rows and the variables in columns, and the response is a single column carrying one measurement for each of those same samples."}
+knitr::include_graphics("figures/02-pls1.svg")
+```
+
 
 ## The response
 
@@ -702,6 +712,11 @@ DIABLO [@Sin19], with a continuous response block in place of a class label.
 
 The organochlorines will be the response *matrix*, and the other omics datasets
 (proteome, serum metabolome, urine metabolome and transcriptome) the predictors.
+
+```{r 03-figure, echo=FALSE, fig.show='asis', results='asis', out.width='100%', fig.cap="Block sPLS relates several predictor matrices to one response matrix. Each block carries a different number of variables, but every block holds the same samples in the same order, which is what allows them to be modelled together."}
+knitr::include_graphics("figures/03-block-spls.svg")
+```
+
 
 <p>
 ::: info
