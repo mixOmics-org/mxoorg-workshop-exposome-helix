@@ -14,14 +14,14 @@ workshop 2026. The hands-on session runs for about 1.5 hours. Participants work 
 
 - [**Practical link**](https://guides.mixomics.org/mxoorg-workshop-exposome-helix/practical/exposome_analysis.html)
 
-- [**Data**](Data/) includes one `.RData` file and the script that builds it
+- [**Data**](Data/) includes one `.RData` file and the script that built the data (the latter is not required for this practical)
 
 ### What the session covers
 
 The practical goes through three case studies on the HELIX data:
 
 1. **PCA** on the HELIX proteome and on the organochlorine exposures — unsupervised
-   exploration of each in turn.
+   exploration of each dataset.
 2. **PLS1** — regression of a single exposure, summed serum PCBs, on the proteome,
    then sparse PLS1 to select the proteins that might be associated with the response.
 3. **block sPLS** — the same exposure family integrated with four molecular blocks at once
@@ -57,7 +57,7 @@ library(mixOmics)
 
 **2. Download this repository, and load the data once.** Clone it, or use
 **Code > Download ZIP** on GitHub. The data file is about 7 MB, so please do this
-**before** the session rather than over the venue's wifi at the start. Then check it
+**before** the session. Then check it
 loads:
 
 ```r
@@ -164,10 +164,8 @@ population-based birth cohort studies in six European countries (France, Greece,
 
 The practical is adapted from the
 [introduction to mixOmics workshop](https://github.com/mixOmics-org/mxoorg-workshop-intro-mixomics),
-keeping its structure and much of its prose, with the methods changed from the
-discriminant family to the regression family. The data preparation derives from the
-Lê Cao Lab's scoping of the Exposome Data Challenge release, which records every
-preparation decision and the reasoning behind it.
+keeping its structure, with the data and methods changed from the
+discriminant family to the regression family. The data were prepared by Kim-Anh Lê Cao.
 
 ## Licence
 
