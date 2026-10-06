@@ -294,11 +294,9 @@ We consider the following two data sets:
 -  the **proteome** contains 36 circulating proteins, largely inflammatory markers and cytokines.
 
 -  the **organochlorines** data set contains nine persistent chemical pollutants
-measured in each child's serum. The
-[repository README](https://github.com/mixOmics-org/mxoorg-workshop-exposome-helix#the-helix-data)
-describes how the datasets were prepared.
+measured in each child's serum.
 
-```{r 01-figure, echo=FALSE, fig.show='asis', results='asis', out.width='42%', fig.cap="PCA describes a single data matrix: the samples are the rows and the variables are the columns. There is no response, so the method looks only at how the variables in that one matrix vary together."}
+```{r 01-figure, echo=FALSE, fig.show='asis', results='asis', out.width='42%', fig.cap="PCA describes a single data matrix: the samples are the rows and the variables are the columns. There is no response. The method summarises the largest sources of variation in the data."}
 knitr::include_graphics("figures/01-pca.svg")
 ```
 
@@ -713,7 +711,7 @@ DIABLO [@Sin19], with a continuous response block in place of a class label.
 The organochlorines will be the response *matrix*, and the other omics datasets
 (proteome, serum metabolome, urine metabolome and transcriptome) the predictors.
 
-```{r 03-figure, echo=FALSE, fig.show='asis', results='asis', out.width='100%', fig.cap="Block sPLS relates several predictor matrices to one response matrix. Each block carries a different number of variables, but every block holds the same samples in the same order, which is what allows them to be modelled together."}
+```{r 03-figure, echo=FALSE, fig.show='asis', results='asis', out.width='100%', fig.cap="Block sPLS relates several predictor matrices to one response matrix. Each block carries a different number of variables, but every block holds the same samples in the same order, which is what allows them to be modelled together through covariance maximisation."}
 knitr::include_graphics("figures/03-block-spls.svg")
 ```
 
@@ -1031,7 +1029,7 @@ matrix to 1 and refit. What question does this model answer instead?
 Further analyses and vignettes are available at
 [mixOmics.org](https://mixOmics.org).
 
-# Acknowledgement and required citation
+# Acknowledgements
 
 The data used in this practical come from the HELIX study and were released by
 ISGlobal for the Exposome Data Challenge 2021. Educational use is permitted.
