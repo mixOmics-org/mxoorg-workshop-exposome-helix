@@ -55,7 +55,7 @@ library(mixOmics)
 **Apple mac users:** if the imported `rgl` package will not install, install
 [XQuartz](https://www.xquartz.org) first, then try again.
 
-**2. Download the data to your working directory.** The data are in Data/helix.RData. Then, set up your working directory in RStudio to this working directory, and check that you can load the data:
+**2. Download the data to your working directory.** The data file is [helix.RData](https://github.com/mixOmics-org/mxoorg-workshop-exposome-helix/raw/main/Data/helix.RData) (about 7 MB). Then, set up your working directory in RStudio to this working directory, and check that you can load the data:
 
 ```r
 # with your working directory set to the practical/ folder
