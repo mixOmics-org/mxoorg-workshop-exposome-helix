@@ -11,7 +11,7 @@
 
 <meta name="author" content="Kim-Anh Lê Cao" />
 
-<meta name="date" content="2026-10-02" />
+<meta name="date" content="2026-10-07" />
 
 <title>Multivariate analysis of the exposome with mixOmics</title>
 
@@ -2776,7 +2776,7 @@ border-radius: 0px;
 mixOmics</h1>
 <h3 class="subtitle">The HELIX case study</h3>
 <h4 class="author">Kim-Anh Lê Cao</h4>
-<h4 class="date">02 October 2026</h4>
+<h4 class="date">07 October 2026</h4>
 
 </div>
 
@@ -3047,14 +3047,22 @@ between them?</p></li>
 characteristic separates the children. To quantify this pattern, we can
 regress a component on a characteristic and examine R², the proportion
 of variation in that component explained by the characteristic:</p>
-<pre class="r"><code># proteome: component 1, then component 2
+<pre class="r"><code># proteome: component 1, then component 2 for cohort
 summary(lm(pca.prot$variates$X[, 1] ~ helix$outcomes$cohort))$r.squared
+summary(lm(pca.prot$variates$X[, 2] ~ helix$outcomes$cohort))$r.squared
+
+# organochlorines: component 1, then component 2 for cohort
+summary(lm(pca.oc$variates$X[, 1] ~ helix$outcomes$cohort))$r.squared
+summary(lm(pca.oc$variates$X[, 2] ~ helix$outcomes$cohort))$r.squared
+
+ # proteome: component 1, then component 2 for BMI
+summary(lm(pca.prot$variates$X[, 1] ~ helix$outcomes$bmi_cat))$r.squared
 summary(lm(pca.prot$variates$X[, 2] ~ helix$outcomes$bmi_cat))$r.squared
 
-# organochlorines: component 1, then component 2
-summary(lm(pca.oc$variates$X[, 1] ~ helix$outcomes$cohort))$r.squared
-summary(lm(pca.oc$variates$X[, 2] ~ helix$outcomes$cohort))$r.squared</code></pre>
-<p>Do the four values agree with the ranking suggested by the sample
+# organochlorines: component 1, then component 2 for BMI
+summary(lm(pca.oc$variates$X[, 1] ~ helix$outcomes$bmi_cat))$r.squared
+summary(lm(pca.oc$variates$X[, 2] ~ helix$outcomes$bmi_cat))$r.squared</code></pre>
+<p>Do these values agree with the ranking suggested by the sample
 plots?</p></li>
 </ol>
 <button onclick="myFunction(&#39;q1&#39;)">
@@ -3130,10 +3138,10 @@ their concentration is expressed per unit of lipid. Their documented
 effects include immune and endocrine toxicity, while the proteome used
 here consists largely of circulating inflammatory markers. This makes
 summed PCBs a relevant exposure to examine against these proteins.</p>
-<p>We use the sum of five congeners rather than a single congener.
+<p>We use the sum of five congeners rather than a single congener, as
 Section 1 showed that the organochlorines are largely one-dimensional
 because they co-accumulate. The sum represents this shared pattern and
-is less noisy than any one congener.</p>
+is less noisy than a single congener.</p>
 </div>
 <div id="set-the-response-variable" class="section level2">
 <h2>Set the response variable</h2>
@@ -3161,7 +3169,7 @@ prediction. Use cross-validation with <code>perf()</code> and the Q2
 statistic to decide how many to retain <span class="citation">(<a href="#ref-Sta87">Ståhle and Wold 1987</a>)</span>:</p>
 <pre class="r"><code>perf.pls.prot &lt;- perf(pls.prot, validation = &quot;Mfold&quot;, folds = 5,
                       nrepeat = 10,
-                      seed = 42)   # for a reproducible cross-validation
+                      seed = 42)   # for a reproducible cross-validation, see note below
 
 plot(perf.pls.prot, criterion = &quot;Q2&quot;)</code></pre>
 <pre class="r"><code>perf.pls.prot$measures$Q2$summary</code></pre>
@@ -3169,10 +3177,12 @@ plot(perf.pls.prot, criterion = &quot;Q2&quot;)</code></pre>
 <div class="info">
 <p><strong>ⓘ We use Q2 to choose the number of components</strong></p>
 <p>Q2 compares the model’s predictions for held-out children with
-predictions based only on the average. We retain a component if its Q2
-is above the horizontal line at 0.0975, and exclude any component below
-the line. Q2 indicates <strong>how many components to retain</strong>.
-It does not measure the strength or importance of the relationship.</p>
+predictions based on what the previous component has explained. For the
+first component, it is simply compared to the average response. We
+retain a component if its Q2 is above the horizontal line at 0.0975, and
+exclude any component below the line. Q2 indicates <strong>how many
+components to retain</strong>. It does not measure the strength or
+importance of the relationship.</p>
 <p>For reproducible cross-validation, pass the seed through the
 <code>seed</code> argument of <code>perf()</code>, as shown above.</p>
 </div>
@@ -3219,11 +3229,12 @@ exposure is 0.43.</p>
 <div id="interpretation" class="section level2">
 <h2>Interpretation</h2>
 <p>Section 1 showed that cohort structures both blocks. Some of the
-horizontal spread therefore represents differences <em>between</em>
-cohorts rather than between children within a cohort, and the fitted
-line passes partly through the six cohort means. The association is
-partly between cohorts. <em>To go further</em> shows how to refit the
-model after removing cohort from the predictor and response.</p>
+horizontal spread along component 1 therefore represents differences
+<em>between</em> cohorts rather than between children within a cohort,
+and the fitted line passes partly through the six cohort means. The
+association is partly between cohorts. <em>To go further</em> shows how
+to refit the model after removing cohort from the predictor and
+response.</p>
 </div>
 <div id="sparse-pls1-for-variable-selection" class="section level2">
 <h2>Sparse PLS1 for variable selection</h2>
@@ -3283,9 +3294,10 @@ results.</p></li>
 <h3>Answers</h3>
 <ol style="list-style-type: decimal">
 <li><p>The largest loadings are <span style="color: #388ECC;">PAI1</span>, followed by <span style="color: #388ECC;">EGF</span>, <span style="color: #388ECC;">IL4</span>, <span style="color: #388ECC;">IL2</span> and <span style="color: #388ECC;">MIP1alfa</span>. They <strong>all have the same
-sign</strong>. Component 1 is therefore a weighted average of a coherent
-group of cytokines and growth factors, rather than a contrast between
-two groups of proteins. The scatter plot establishes the direction;
+sign</strong>. Component 1 is a weighted combination of a group of
+cytokines and growth factors, rather than a contrast between two groups
+of proteins (for the latter we would have obtained loadings with
+different signs). The scatter plot illustrated the direction;
 <code>cor(proteome[, &quot;PAI1&quot;], Y)</code> confirms it with a value of
 -0.45. Children with a <strong>higher</strong> PCB burden have
 <strong>lower</strong> circulating levels of these proteins. This
@@ -3412,10 +3424,11 @@ plotIndiv(block.spls.helix, group = helix$outcomes$cohort,
 plotVar(block.spls.helix, cutoff = 0.5, legend = TRUE,
         title = &#39;Correlation circle, all five blocks&#39;)</code></pre>
 <pre class="r"><code># circosPlot requires a group argument even though this is a regression and
-# there are no groups in the model. Cohort is passed to satisfy it; the
-# colouring it produces is decoration, not part of the model.
+# there are no groups in the model. Cohort here is passed to satisfy it;
+# if we set line = TRUE we obtain the average abundance of each selected
+# variable according to cohort
 circosPlot(block.spls.helix, group = helix$outcomes$cohort,
-           cutoff = 0.55, line = TRUE,
+           cutoff = 0.55,
            size.variables = 0.5, size.labels = 1.2)</code></pre>
 <pre class="r"><code># variable selection, one block at a time
 selectVar(block.spls.helix, comp = 1, block = &quot;proteome&quot;)
@@ -3445,9 +3458,9 @@ agrees with Section 2, where Q2 retained only one PLS1 component.</p>
 </p>
 <p>The serum metabolites are named <code>metab_1</code>,
 <code>metab_2</code> and so on. They have a chemical class but no
-compound identifier because none is available in the release. Their
-loadings are therefore not currently biologically interpretable. The
-proteome, urine and transcriptome have feature-level annotations:</p>
+compound identifier that is available. Their loadings are therefore not
+currently biologically interpretable. The proteome, urine and
+transcriptome have feature-level annotations:</p>
 <pre class="r"><code>head(helix$annotation$proteome)
 head(helix$annotation$urine)
 head(helix$annotation$serum)        # Class only, no compound names
@@ -3496,12 +3509,9 @@ cor(block.spls.helix$variates$transcriptome[, 1], ty)</code></pre>
 <p>Run the code above, line by line.</p>
 <ol style="list-style-type: decimal">
 <li><p>Which predictor blocks track the organochlorines most closely in
-<code>plotIndiv</code> and the four scatter plots? Can the four
-correlations be compared directly? Consider the number of features in
-each block.</p></li>
+<code>plotIndiv</code> and the four scatter plots?</p></li>
 <li><p>What does the circos plot show that <code>plotVar</code> and
-<code>selectVar</code> do not? What do the colours around its outside
-represent?</p></li>
+<code>selectVar</code> do not?</p></li>
 <li><p>What can you conclude from the analysis, and what can you not
 conclude?</p></li>
 </ol>
@@ -3515,34 +3525,25 @@ conclude?</p></li>
 <li><p>The <span style="color: #388ECC;">proteome</span> and <span style="color: #F68B33;">serum</span> metabolome track the response most
 closely, with correlations of 0.44 and 0.44, respectively. The <span style="color: #585858;">urine</span> metabolome follows at 0.34, and the
 <span style="color: #009E73;">transcriptome</span> is last at 0.28.
-These values should <strong>not</strong> be compared directly. The
-blocks contain 36, 177, 44 and 1,000 features, and correlations from a
-fitted model are not adjusted for block width. A component from a wide
-block can be constructed to correlate with almost anything, particularly
-when the block has more features than children. Comparisons are valid
-<em>within</em> a block but not <em>between</em> blocks of very
-different widths. The proteome is notable because it achieves this
-correlation using only 36 named, interpretable proteins.</p></li>
+These correlations come from a model fitted to all the children without
+cross-validation, so we read them as a description of this study rather
+than as a prediction to other studies.</p></li>
 <li><p><code>plotVar</code> and <code>selectVar</code> identify selected
 features and show how each relates to the components. The circos plot
 also shows correlations <strong>between features in different
 blocks</strong>. Chords connect the features, and the cutoff limits the
 display to strong correlations. This reveals, for example, whether a
 selected protein varies with a selected urinary metabolite and whether
-both vary with the PCB congeners. The outer colours come from the
-<code>group</code> argument. This is a regression model with no groups;
-cohort was supplied only because <code>circosPlot()</code> requires a
-factor of the correct length. The colours are <strong>not</strong> part
-of the model.</p></li>
+both vary with the PCB congeners.</p></li>
 <li><p>The <code>keepX</code> values were fixed manually rather than
-evaluated by cross-validation. The conclusion is descriptive: <em>in
-these 896 children, the four molecular blocks share a direction of
-variation with organochlorine body burden, most visibly in the proteome
-and the serum metabolome, and the selected features carry that
+chosen according to cross-validation. The conclusion is descriptive:
+<em>in these 896 children, the four molecular blocks share a direction
+of variation with organochlorine body burden, most visibly in the
+proteome and the serum metabolome, and the selected features carry that
 variation.</em> The model does <strong>not</strong> establish that
-exposure can be predicted in a new child. The two-block PLS1 model in
-Section 2 provides weak evidence for prediction, with Q2 = 0.177 on one
-component.</p></li>
+exposure can be predicted in a new child at this stage. The two-block
+PLS1 model in Section 2 provides weak evidence for prediction, with Q2 =
+0.177 on one component.</p></li>
 </ol>
 </div>
 </div>
@@ -3551,7 +3552,7 @@ component.</p></li>
 <div id="to-go-further" class="section level2">
 <h2>To go further</h2>
 <p>Some analysis extensions you can explore in your own time:</p>
-<p><strong>Section 1, explore more blocks and characteristics.</strong>
+<p><strong>Section 1: explore more blocks and characteristics.</strong>
 Run <code>pca()</code> on each of the other three omics blocks and the
 other eight exposure families (see <code>names(helix$exposure)</code>
 that lists them). Recolour the sample plots by asthma outcome
@@ -3561,7 +3562,7 @@ that lists them). Recolour the sample plots by asthma outcome
 in <code>helix$covariates</code>. Which exposure families measure one
 underlying pattern, as the organochlorines do, and which contain several
 distinct patterns?</p>
-<p><strong>Section 2, adjust for cohort.</strong> Remove cohort from
+<p><strong>Section 2: adjust for cohort.</strong> Remove cohort from
 both the response and the proteome using a simple linear model and
 extracting the residuals, then fit a new PLS model:</p>
 <pre class="r"><code>Y.adj        &lt;- residuals(lm(Y ~ helix$outcomes$cohort))
@@ -3576,12 +3577,12 @@ abline(lm(Y.adj ~ pls.adj$variates$X[, 1]), lwd = 2)
 
 cor(pls.adj$variates$X[, 1], Y.adj)</code></pre>
 <p>Does the association remain?</p>
-<p><strong>Section 2, change the predictor or response.</strong> Keep
+<p><strong>Section 2: change the predictor or response.</strong> Keep
 the same response and use the serum, urine or transcriptome as the
 predictor block. Alternatively, keep the proteome and change the
 response to <code>hs_dde_cadj_Log2</code>, a metal or a phthalate. Which
 pairs produce a Q2 above the line?</p>
-<p><strong>Section 3, change the response family.</strong> Replace
+<p><strong>Section 3: change the response family.</strong> Replace
 <code>helix$exposure$organochlorines</code> in <code>X.list</code> with
 <code>helix$exposure$air_pollution</code> or
 <code>helix$exposure$phthalates</code>. In the design matrix code,
