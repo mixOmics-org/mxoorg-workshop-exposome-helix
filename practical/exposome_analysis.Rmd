@@ -405,7 +405,7 @@ Run the code above, line by line.
    # organochlorines: component 1, then component 2 for cohort
    summary(lm(pca.oc$variates$X[, 1] ~ helix$outcomes$cohort))$r.squared
    summary(lm(pca.oc$variates$X[, 2] ~ helix$outcomes$cohort))$r.squared
-   
+
     # proteome: component 1, then component 2 for BMI
    summary(lm(pca.prot$variates$X[, 1] ~ helix$outcomes$bmi_cat))$r.squared
    summary(lm(pca.prot$variates$X[, 2] ~ helix$outcomes$bmi_cat))$r.squared
@@ -818,8 +818,12 @@ plotIndiv(block.spls.helix, group = helix$outcomes$cohort,
 plotVar(block.spls.helix, cutoff = 0.5, legend = TRUE,
         title = 'Correlation circle, all five blocks')
 
+# circosPlot requires a group argument even though this is a regression and
+# there are no groups in the model. Cohort here is passed to satisfy it;
+# if we set line = TRUE we obtain the average abundance of each selected
+# variable according to cohort
 circosPlot(block.spls.helix, group = helix$outcomes$cohort,
-           cutoff = 0.55, 
+           cutoff = 0.55,
            size.variables = 0.5, size.labels = 1.2)
 
 # variable selection, one block at a time
@@ -911,9 +915,9 @@ cor(block.spls.helix$variates$transcriptome[, 1], ty)
 Run the code above, line by line.
 
 1. Which predictor blocks track the organochlorines most closely in `plotIndiv`
-   and the four scatter plots? 
+   and the four scatter plots?
 
-2. What does the circos plot show that `plotVar` and `selectVar` do not? 
+2. What does the circos plot show that `plotVar` and `selectVar` do not?
 
 3. What can you conclude from the
    analysis, and what can you not conclude?
@@ -938,14 +942,14 @@ Show solutions
    `r round(cor(block.spls.helix$variates$urine[,1], block.spls.helix$variates$organochlorines[,1]), 2)`,
    and the `r colorize("green", "transcriptome")` is last at
    `r round(cor(block.spls.helix$variates$transcriptome[,1], block.spls.helix$variates$organochlorines[,1]), 2)`. These correlations come from a model fitted to all the children without cross-validation, so we read them as a description of this study rather than as a prediction to other studies.
-  
+
 
 2. `plotVar` and `selectVar` identify selected features and show how each relates
    to the components. The circos plot also shows correlations **between features
    in different blocks**. Chords connect the features, and the cutoff limits the
    display to strong correlations. This reveals, for example, whether a selected
    protein varies with a selected urinary metabolite and whether both vary with
-   the PCB congeners. 
+   the PCB congeners.
 
 3. The `keepX` values were fixed manually rather than chosen according to cross-validation. The conclusion is descriptive: *in these 896 children,
    the four molecular blocks share a direction of variation with organochlorine

@@ -3423,8 +3423,12 @@ plotIndiv(block.spls.helix, group = helix$outcomes$cohort,
 <pre class="r"><code># variable plots:
 plotVar(block.spls.helix, cutoff = 0.5, legend = TRUE,
         title = &#39;Correlation circle, all five blocks&#39;)</code></pre>
-<pre class="r"><code>circosPlot(block.spls.helix, group = helix$outcomes$cohort,
-           cutoff = 0.55, 
+<pre class="r"><code># circosPlot requires a group argument even though this is a regression and
+# there are no groups in the model. Cohort here is passed to satisfy it;
+# if we set line = TRUE we obtain the average abundance of each selected
+# variable according to cohort
+circosPlot(block.spls.helix, group = helix$outcomes$cohort,
+           cutoff = 0.55,
            size.variables = 0.5, size.labels = 1.2)</code></pre>
 <pre class="r"><code># variable selection, one block at a time
 selectVar(block.spls.helix, comp = 1, block = &quot;proteome&quot;)
