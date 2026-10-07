@@ -24,3 +24,8 @@ dev-notes/
 
 # Working prompt for regenerating the figures. A tool, not teaching material.
 illustration-prompt.md
+
+# Purled R script, regenerated from the .Rmd with knitr::purl(). Derived from
+# the practical, so it would drift silently if committed. Named rather than
+# globbed, to keep Data/build_helix_data.R tracked.
+practical/exposome_analysis.R

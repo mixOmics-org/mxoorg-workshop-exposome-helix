@@ -398,13 +398,21 @@ Run the code above, line by line.
    explained by the characteristic:
 
    ```r
-   # proteome: component 1, then component 2
+   # proteome: component 1, then component 2 for cohort
    summary(lm(pca.prot$variates$X[, 1] ~ helix$outcomes$cohort))$r.squared
-   summary(lm(pca.prot$variates$X[, 2] ~ helix$outcomes$bmi_cat))$r.squared
+   summary(lm(pca.prot$variates$X[, 2] ~ helix$outcomes$cohort))$r.squared
 
-   # organochlorines: component 1, then component 2
+   # organochlorines: component 1, then component 2 for cohort
    summary(lm(pca.oc$variates$X[, 1] ~ helix$outcomes$cohort))$r.squared
    summary(lm(pca.oc$variates$X[, 2] ~ helix$outcomes$cohort))$r.squared
+   
+    # proteome: component 1, then component 2 for BMI
+   summary(lm(pca.prot$variates$X[, 1] ~ helix$outcomes$bmi_cat))$r.squared
+   summary(lm(pca.prot$variates$X[, 2] ~ helix$outcomes$bmi_cat))$r.squared
+
+   # organochlorines: component 1, then component 2 for BMI
+   summary(lm(pca.oc$variates$X[, 1] ~ helix$outcomes$bmi_cat))$r.squared
+   summary(lm(pca.oc$variates$X[, 2] ~ helix$outcomes$bmi_cat))$r.squared
    ```
 
    Do the four values agree with the ranking suggested by the sample plots?
@@ -485,9 +493,9 @@ include immune and endocrine toxicity, while the proteome used here consists
 largely of circulating inflammatory markers. This makes summed PCBs a relevant
 exposure to examine against these proteins.
 
-We use the sum of five congeners rather than a single congener. Section 1 showed
+We use the sum of five congeners rather than a single congener, as Section 1 showed
 that the organochlorines are largely one-dimensional because they co-accumulate.
-The sum represents this shared pattern and is less noisy than any one congener.
+The sum represents this shared pattern and is less noisy than a single  congener.
 
 ## Set the response variable
 
@@ -524,7 +532,7 @@ retain [@Sta87]:
 ```{r 02-perf}
 perf.pls.prot <- perf(pls.prot, validation = "Mfold", folds = 5,
                       nrepeat = 10,
-                      seed = 42)   # for a reproducible cross-validation
+                      seed = 42)   # for a reproducible cross-validation, see note below
 
 plot(perf.pls.prot, criterion = "Q2")
 
@@ -536,7 +544,7 @@ perf.pls.prot$measures$Q2$summary
 **ⓘ We use Q2 to choose the number of components**
 
 Q2 compares the model's predictions for held-out children with predictions based
-only on the average. We retain a component if its Q2 is above the horizontal line
+on what the previous component has explained. For the first component, it is simply compared to the average response. We retain a component if its Q2 is above the horizontal line
 at 0.0975, and exclude any component below the line. Q2 indicates **how
 many components to retain**. It does not measure the strength or importance of
 the relationship.
@@ -597,7 +605,7 @@ units. The correlation between the component and the exposure is
 ## Interpretation
 
 Section 1 showed that cohort structures both blocks. Some of the horizontal
-spread therefore represents differences *between* cohorts rather than between
+spread along component 1 therefore represents differences *between* cohorts rather than between
 children within a cohort, and the fitted line passes partly through the six
 cohort means. The association is partly between cohorts. *To go further* shows
 how to refit the model after removing cohort from the predictor and response.
@@ -674,9 +682,9 @@ Show solutions
 1. The largest loadings are `r colorize("blue", "PAI1")`, followed by
    `r colorize("blue", "EGF")`, `r colorize("blue", "IL4")`,
    `r colorize("blue", "IL2")` and `r colorize("blue", "MIP1alfa")`. They
-   **all have the same sign**. Component 1 is therefore a weighted average of a
-   coherent group of cytokines and growth factors, rather than a contrast
-   between two groups of proteins. The scatter plot establishes the direction;
+   **all have the same sign**. Component 1 is  a weighted conbination of a
+   group of cytokines and growth factors, rather than a contrast
+   between two groups of proteins (for the latter we would have obtained loadings with different signs). The scatter plot illustrated the direction;
    `cor(proteome[, "PAI1"], Y)` confirms it with a value of
    `r round(cor(proteome[, "PAI1"], Y), 2)`. Children with a **higher** PCB
    burden have **lower** circulating levels of these proteins. This pattern is
@@ -814,7 +822,7 @@ plotVar(block.spls.helix, cutoff = 0.5, legend = TRUE,
 # there are no groups in the model. Cohort is passed to satisfy it; the
 # colouring it produces is decoration, not part of the model.
 circosPlot(block.spls.helix, group = helix$outcomes$cohort,
-           cutoff = 0.55, line = TRUE,
+           cutoff = 0.55, 
            size.variables = 0.5, size.labels = 1.2)
 
 # variable selection, one block at a time
@@ -850,8 +858,7 @@ where Q2 retained only one PLS1 component.
 </p>
 
 The serum metabolites are named `metab_1`, `metab_2` and so on. They have a
-chemical class but no compound identifier because none is available in the
-release. Their loadings are therefore not currently biologically interpretable. The
+chemical class but no compound identifier that is available. Their loadings are therefore not currently biologically interpretable. The
 proteome, urine and transcriptome have feature-level annotations:
 
 ```{r 03-annotation}
@@ -907,11 +914,9 @@ cor(block.spls.helix$variates$transcriptome[, 1], ty)
 Run the code above, line by line.
 
 1. Which predictor blocks track the organochlorines most closely in `plotIndiv`
-   and the four scatter plots? Can the four correlations be compared directly?
-   Consider the number of features in each block.
+   and the four scatter plots? 
 
-2. What does the circos plot show that `plotVar` and `selectVar` do not? What do
-   the colours around its outside represent?
+2. What does the circos plot show that `plotVar` and `selectVar` do not? 
 
 3. What can you conclude from the
    analysis, and what can you not conclude?
@@ -935,32 +940,22 @@ Show solutions
    respectively. The `r colorize("grey", "urine")` metabolome follows at
    `r round(cor(block.spls.helix$variates$urine[,1], block.spls.helix$variates$organochlorines[,1]), 2)`,
    and the `r colorize("green", "transcriptome")` is last at
-   `r round(cor(block.spls.helix$variates$transcriptome[,1], block.spls.helix$variates$organochlorines[,1]), 2)`.
-   These values should **not** be compared directly. The blocks contain 36, 177,
-   44 and 1,000 features, and correlations from a fitted model are not adjusted
-   for block width. A component from a wide block can be constructed to
-   correlate with almost anything, particularly when the block has more
-   features than children. Comparisons are valid *within* a block but not
-   *between* blocks of very different widths. The proteome is notable because it
-   achieves this correlation using only 36 named, interpretable proteins.
+   `r round(cor(block.spls.helix$variates$transcriptome[,1], block.spls.helix$variates$organochlorines[,1]), 2)`. These correlations come from a model fitted to all the children without cross-validation, so we read them as a description of this study rather than as a prediction to other studies.
+  
 
 2. `plotVar` and `selectVar` identify selected features and show how each relates
    to the components. The circos plot also shows correlations **between features
    in different blocks**. Chords connect the features, and the cutoff limits the
    display to strong correlations. This reveals, for example, whether a selected
    protein varies with a selected urinary metabolite and whether both vary with
-   the PCB congeners. The outer colours come from the `group` argument. This is
-   a regression model with no groups; cohort was supplied only because
-   `circosPlot()` requires a factor of the correct length. The colours are
-   **not** part of the model.
+   the PCB congeners. 
 
-3. The `keepX` values were fixed manually rather than evaluated
-   by cross-validation. The conclusion is descriptive: *in these 896 children,
+3. The `keepX` values were fixed manually rather than chosen according to cross-validation. The conclusion is descriptive: *in these 896 children,
    the four molecular blocks share a direction of variation with organochlorine
    body burden, most visibly in the proteome and the serum metabolome, and the
    selected features carry
    that variation.* The model does **not** establish that exposure can be
-   predicted in a new child. The two-block PLS1 model in Section 2 provides weak
+   predicted in a new child at this stage. The two-block PLS1 model in Section 2 provides weak
    evidence for prediction, with Q2 =
    `r round(perf.pls.prot$measures$Q2$summary$mean[1], 3)` on one component.
 :::
@@ -971,7 +966,7 @@ Show solutions
 
 Some analysis extensions you can explore in your own time:
 
-**Section 1, explore more blocks and characteristics.** Run `pca()` on each of
+**Section 1: explore more blocks and characteristics.** Run `pca()` on each of
 the other three omics blocks and the other eight exposure families (see
 `names(helix$exposure)` that lists them). Recolour the sample plots by asthma outcome
 (`helix$outcomes$asthma`) or maternal
@@ -980,7 +975,7 @@ component with the continuous covariates in `helix$covariates`. Which exposure
 families measure one underlying pattern, as the organochlorines do, and which
 contain several distinct patterns?
 
-**Section 2, adjust for cohort.** Remove cohort from both the response and the
+**Section 2: adjust for cohort.** Remove cohort from both the response and the
 proteome using a simple linear model and extracting the residuals, then fit a new PLS model:
 
 ```{r 04-cohort-check, eval = FALSE}
@@ -999,12 +994,12 @@ cor(pls.adj$variates$X[, 1], Y.adj)
 
 Does the association remain?
 
-**Section 2, change the predictor or response.** Keep the same response and use
+**Section 2: change the predictor or response.** Keep the same response and use
 the serum, urine or transcriptome as the predictor block. Alternatively, keep
 the proteome and change the response to `hs_dde_cadj_Log2`, a metal or a
 phthalate. Which pairs produce a Q2 above the line?
 
-**Section 3, change the response family.** Replace
+**Section 3: change the response family.** Replace
 `helix$exposure$organochlorines` in `X.list` with
 `helix$exposure$air_pollution` or `helix$exposure$phthalates`. In the design
 matrix code, change only the block name.
