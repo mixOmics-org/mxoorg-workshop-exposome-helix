@@ -415,7 +415,7 @@ Run the code above, line by line.
    summary(lm(pca.oc$variates$X[, 2] ~ helix$outcomes$bmi_cat))$r.squared
    ```
 
-   Do the four values agree with the ranking suggested by the sample plots?
+   Do these values agree with the ranking suggested by the sample plots?
 
 <button onclick="myFunction(&#39;q1&#39;)">
 
@@ -682,7 +682,7 @@ Show solutions
 1. The largest loadings are `r colorize("blue", "PAI1")`, followed by
    `r colorize("blue", "EGF")`, `r colorize("blue", "IL4")`,
    `r colorize("blue", "IL2")` and `r colorize("blue", "MIP1alfa")`. They
-   **all have the same sign**. Component 1 is  a weighted conbination of a
+   **all have the same sign**. Component 1 is  a weighted combination of a
    group of cytokines and growth factors, rather than a contrast
    between two groups of proteins (for the latter we would have obtained loadings with different signs). The scatter plot illustrated the direction;
    `cor(proteome[, "PAI1"], Y)` confirms it with a value of
@@ -818,9 +818,6 @@ plotIndiv(block.spls.helix, group = helix$outcomes$cohort,
 plotVar(block.spls.helix, cutoff = 0.5, legend = TRUE,
         title = 'Correlation circle, all five blocks')
 
-# circosPlot requires a group argument even though this is a regression and
-# there are no groups in the model. Cohort is passed to satisfy it; the
-# colouring it produces is decoration, not part of the model.
 circosPlot(block.spls.helix, group = helix$outcomes$cohort,
            cutoff = 0.55, 
            size.variables = 0.5, size.labels = 1.2)
